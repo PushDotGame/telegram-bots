@@ -172,12 +172,11 @@ $ sudo service bot-fw2alice status
 
 ### Yeah, enjoy your bot.
 
+<img style="width: 100%" src="https://raw.githubusercontent.com/PushDotGame/telegram-bots/master/clock.jpg" alt="enjoy-you-bot"/>
 
 
 
 ---
-
-
 
 If you run more than one bot on your server, you may need:
 
