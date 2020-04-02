@@ -51,15 +51,6 @@ $ pip3 install -U python-dotenv python-telegram-bot
 ```
 
 
-### Nginx
-
-Needed if multi-bots on your server. 
-
-```console
-$ sudo apt install nginx
-```
-
-
 ### Clone the repository
 
 ```console
@@ -180,3 +171,23 @@ $ sudo service bot-fw2alice status
 
 
 ### Yeah, enjoy your bot.
+
+
+
+
+---
+
+
+
+If you run more than one bot on your server, you may need:
+
+### Nginx
+
+Needed if multi-bots on your server. 
+
+```console
+$ sudo apt install nginx
+```
+
+...
+
