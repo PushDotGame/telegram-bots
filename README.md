@@ -1,6 +1,8 @@
 # Telegram forward/id bot
 
-## Bots 
+Tons of thanks to [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
+
+## Bots
 
 ### Forward bot 自动转发机器人
 
@@ -16,6 +18,13 @@ Example: [@answer_id_bot](https://t.me/answer_id_bot)
 Answer the group/channel/user id, when you need.
 
 当你需要时，给出群组/频道/用户的 ID
+
+If the above [@answer_id_bot](https://t.me/answer_id_bot) works well,
+you may just need to use it once,
+for getting a group/channel id.
+
+如果上边的 [@answer_id_bot](https://t.me/answer_id_bot)
+工作良好，你也许只需要它一次，用于取得群组或频道的 ID
 
 
 
@@ -75,11 +84,13 @@ CERT_DIR=/path/to/cert/dir
 DATA_DIR=/path/to/data/dir
 ```
 
-If you need a proxy, add:
+If your bot work behind a proxy, add:
 
 ```.env
 PROXY_URL=http://{proxy-host}:{proxy-port}
 ```
+
+or, follow [Working Behind a Proxy](https://github.com/python-telegram-bot/python-telegram-bot/wiki/Working-Behind-a-Proxy)
 
 
 ### Make your bot configuration file
