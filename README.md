@@ -178,7 +178,10 @@ $ sudo service bot-fw2alice status
 
 ---
 
-If you run more than one bot on your server, you may need:
+If you run more than one bot on your server,
+read [Using nginx with one domain/port for all bots](https://github.com/python-telegram-bot/python-telegram-bot/wiki/Webhooks#using-nginx-with-one-domainport-for-all-bots)
+
+And you may need:
 
 ### Nginx
 
@@ -188,5 +191,32 @@ Needed if multi-bots on your server.
 $ sudo apt install nginx
 ```
 
+
+### Create `/etc/nginx/sites-enabled/bots`
+
+```
+server {
+    listen              {server-port, default: 8443} ssl;
+    server_name         {server-ip, or domain};
+    ssl_certificate     /path/to/cert.pem;
+    ssl_certificate_key /path/to/private.key;
+
+    location /{bot-id-1} {
+        proxy_pass https://127.0.0.1:{bot-port-1}/{bot-id-1};
+    }
+
+    location /{bot-id-2} {
+        proxy_pass https://127.0.0.1:{bot-port-2}/{bot-id-2};
+    }
+}
+```
+
+### Restart nginx
+
+```console
+$ sudo service nginx restart
+```
+
 ...
 
+Well done.
