@@ -129,7 +129,9 @@ def main():
         return
 
     start()
-    shell.embed()
+
+    if settings.DEBUG:
+        shell.embed()
 
 
 if __name__ == "__main__":

@@ -23,6 +23,9 @@ BOT_SESSION_NAME = sys.argv[1].lower()
 # global
 dotenv.load_dotenv(dotenv_path=os.path.join(BASE_DIR, '.env'))
 
+# debug
+DEBUG = (os.getenv("DEBUG") or 'False').lower() == 'true'
+
 # cert dir
 CERT_DIR = _touch(os.getenv("CERT_DIR") or os.path.join(BASE_DIR, '.cert'))
 
