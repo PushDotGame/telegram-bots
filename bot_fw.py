@@ -1,7 +1,13 @@
+import os
+import dotenv
 import libs.settings as settings
 import libs.shell as shell
 from telegram import ParseMode
 from telegram.ext import (Updater, Defaults, Filters, CommandHandler, MessageHandler)
+
+# load: `.bot.session_name`
+dotenv.load_dotenv(dotenv_path=os.path.join(settings.ENV_DIR, '.bot.{}'.format(settings.BOT_SESSION_NAME)))
+FORWARD_CHAT_ID = os.getenv("FORWARD_CHAT_ID")
 
 
 def private_command_start(update, context):
@@ -12,7 +18,7 @@ def private_command_start(update, context):
 
 
 def private_message(update, context):
-    update.effective_message.forward(settings.FORWARD_CHAT_ID)
+    update.effective_message.forward(FORWARD_CHAT_ID)
     update.message.reply_text(
         text='`Forwarded.`',
         reply_to_message_id=update.effective_message.message_id,
