@@ -1,12 +1,14 @@
 import libs.settings as settings
 import os
 import dotenv
+import random
 import telegram
 import importlib
 import libs.shell as shell
 
 from libs.MQBot import MQBot
 from libs.FileCache import FileCache
+from libs.GroupBotQA import asks
 from presets.group_tmpl import text_values as tv
 
 from telegram.ext import (Updater, Filters, CommandHandler, MessageHandler)
@@ -33,30 +35,42 @@ def private_command_start(update, context):
 
 
 def group_text(update, context):
-    update.message.reply_text(
-        text='text',
-        reply_to_message_id=update.effective_message.message_id,
-    )
-    pass
+    message_text = update.effective_message.text.strip()
 
+    for ask in asks:
+        if ask.match(message_text):
+            topic = ask.topic
+            replies = topic.replies
 
-# def private_message(update, context):
-#     message = update.message.reply_text(
-#         text=tv['private_message'],
-#         reply_to_message_id=update.effective_message.message_id,
-#     ).result()
-#
-#     if message:
-#         key = '{}_message'.format(update.effective_chat.id)
-#
-#         previous_id = FC.get(key)
-#         FC.put(key, message.message_id)
-#
-#         if previous_id:
-#             context.bot.delete_message(
-#                 chat_id=update.effective_chat.id,
-#                 message_id=previous_id,
-#             )
+            reply = replies[random.randint(0, len(replies) - 1)]
+
+            if reply.trigger:
+                """trigger"""
+
+                update.message.reply_text(
+                    text='trigger: {}'.format(reply.trigger),
+                )
+
+            else:
+                """text"""
+
+                # show title
+                if topic.show_title:
+                    text = '*《{}》*' \
+                           '\n\n{}'.format(topic.title, '\n\n'.join(reply.lines))
+                else:
+                    text = '\n\n'.join(reply.lines)
+
+                # use reply
+                if ask.topic.use_reply:
+                    update.message.reply_text(text=text)
+                else:
+                    context.bot.send_message(
+                        chat_id=update.effective_chat.id,
+                        text=text,
+                    )
+
+            break
 
 
 def new_chat_members(update, context):
@@ -132,11 +146,11 @@ def main():
         callback=private_command_start,
     ))
 
-    # # private message
-    # dp.add_handler(MessageHandler(
-    #     filters=Filters.private & (~ Filters.sticker),
-    #     callback=private_message,
-    # ))
+    # group text
+    dp.add_handler(MessageHandler(
+        filters=Filters.group & Filters.text,
+        callback=group_text,
+    ))
 
     # new_chat_members
     dp.add_handler(MessageHandler(

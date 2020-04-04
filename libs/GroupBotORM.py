@@ -1,0 +1,153 @@
+import os
+from peewee import *
+from playhouse.apsw_ext import APSWDatabase
+from . import settings
+
+# bot = APSWDatabase(os.path.join(settings.BOT_DATA_DIR, 'bot.db'))
+qa = APSWDatabase(os.path.join(settings.BOT_DATA_DIR, 'qa.db'))
+
+
+class QAModel(Model):
+    class Meta:
+        database = qa
+
+
+class Topic(QAModel):
+    active = BooleanField(default=True)
+    use_reply = BooleanField(default=False)
+    show_title = BooleanField(default=False)
+    title = CharField(max_length=64)
+    remark = CharField(null=True)
+
+    def __str__(self):
+        return '<Topic #{id} {title}>'.format(
+            id=self.id,
+            title=self.title,
+        )
+
+
+class Ask(QAModel):
+    MODE_STRICT = 0
+    MODE_ORDER = 1
+    MODE_DISORDER = 2
+
+    topic = ForeignKeyField(Topic, backref='asks')
+    active = BooleanField(default=True)
+    mode = SmallIntegerField(default=0)
+    words = TextField(null=True)
+    remark = CharField(null=True)
+
+    def __str__(self):
+        return '<Ask #{id} {mode}>'.format(
+            id=self.id,
+            mode=self.mode,
+        )
+
+    @staticmethod
+    def _list(payload: list, els_to_remove: list = None):
+        result = []
+
+        for item in payload:
+            if item not in result:
+                result.append(item.strip())
+
+        for el in els_to_remove or ['', None]:
+            while el in result:
+                result.remove(el)
+
+        return result
+
+    @property
+    def list2(self):
+        list2 = []
+
+        for line in self._list(str(self.words).replace('\n', '').replace('\r', '').strip(';').split(';')):
+            __clear = self._list(line.split(','))
+            if __clear:
+                list2.append(__clear)
+
+        return list2
+
+    def _mix(self, list2: list, i=1, target=None):
+        # results with ';'
+        __mixed = []
+
+        if 1 > len(list2):
+            return __mixed
+
+        if 1 == len(list2):
+            return list2[0]
+
+        if target is None:
+            target = list2[0]
+
+        for s in target:
+            for el in list2[i]:
+                if not el.strip():
+                    r = el
+                else:
+                    r = '%s;%s' % (s, el)
+
+                if r not in __mixed:
+                    __mixed.append(r)
+
+        if i < len(list2) - 1:
+            return self._mix(
+                list2=list2,
+                i=i + 1,
+                target=__mixed,
+            )
+
+        # results without ';'
+        results = []
+        for row in __mixed:
+            results.append(row.split(';'))
+
+        return results
+
+    def match(self, payload: str):
+        mixed_list = self._mix(self.list2)
+
+        if self.MODE_STRICT == self.mode:
+            for mixed in mixed_list:
+                if ''.join(mixed) == payload:
+                    return True
+
+        elif self.MODE_ORDER == self.mode:
+            for mixed in mixed_list:
+                p = []
+                for e in mixed:
+                    p.append(payload.find(e))
+                if -1 not in p and p == sorted(p):
+                    return True
+
+        elif self.MODE_DISORDER == self.mode:
+            for mixed in mixed_list:
+
+                __matched = True
+
+                for el in mixed:
+                    if el not in payload:
+                        __matched = False
+
+                if __matched is True:
+                    return True
+
+        return False
+
+
+class Reply(QAModel):
+    topic = ForeignKeyField(Topic, backref='replies')
+    active = BooleanField(default=True)
+    text = TextField(null=True)
+    trigger = CharField(max_length=32, null=True)
+    remark = CharField(null=True)
+
+    def __str__(self):
+        return '<Reply #{id}>'.format(
+            id=self.id,
+        )
+
+    @property
+    def lines(self):
+        return str(self.text).split(';')

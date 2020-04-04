@@ -7,7 +7,7 @@ BASE_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), os.pardir)
 
 # bot session name
 if len(sys.argv) < 2:
-    exit('Please run `python3 {} <bot_session_name>`'.format(__file__))
+    exit('Please run `python3 {} <bot_session_name>`'.format(sys.argv[0]))
 BOT_SESSION_NAME = sys.argv[1].lower()
 
 # global

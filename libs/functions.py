@@ -37,3 +37,5 @@ def append2file(path_to_file: str, line):
     with open(path_to_file, 'a') as fp:
         fp.write('\n{}'.format(line))
     return path_to_file
+
+
