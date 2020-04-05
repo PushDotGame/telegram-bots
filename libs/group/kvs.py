@@ -13,8 +13,10 @@ kvs = {
 
     'rules': 'rules-text',
 
-    'command_serve_updating': '`Updating ..`',
-    'command_serve_finished': '*Update accomplished.*',
+    'group_command_serve_updating': '`Updating ..`',
+    'group_command_serve_finished': '*Update accomplished.*',
+
+    'group_command_kicked': 'Have already been removed from this group.'
 }
 
 rows = KeyValue.select()

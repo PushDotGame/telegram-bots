@@ -152,3 +152,9 @@ class MQBot(Bot):
         return super(MQBot, self).send_game(
             *args, **kwargs
         )
+
+    @mq.queuedmessage
+    def kick_chat_member(self, *args, **kwargs):
+        return super(MQBot, self).kick_chat_member(
+            *args, **kwargs
+        )

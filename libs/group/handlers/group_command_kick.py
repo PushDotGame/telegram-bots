@@ -1,3 +1,4 @@
+import time
 from telegram.ext import (Dispatcher, CommandHandler, Filters)
 from telegram.ext.dispatcher import run_async
 from conf import env
@@ -22,22 +23,34 @@ def attach(dispatcher: Dispatcher):
 def _group_command_kick(update, context):
     chat_admin = hf.get_admin_chat(update)
     if chat_admin is None:
-        print('Not admin.')
         return
 
-    print('Admin:')
-    print(chat_admin)
-    print('chat_admin.can_restrict_members:', chat_admin.can_restrict_members)
+    if not chat_admin.can_restrict_members:
+        return
 
+    if update.effective_message.reply_to_message is None:
+        return
 
+    if update.effective_message.reply_to_message.from_user.id == settings.BOT_ID:
+        update.effective_message.delete()
+        return
+
+    # kick
+    update.effective_chat.kick_member(
+        user_id=update.effective_message.reply_to_message.from_user.id
+    )
+
+    # send tip message
+    tip_message = context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text='`{full_name}`\n\n{preset}'.format(
+            full_name=update.effective_message.reply_to_message.from_user.full_name,
+            preset=kvs['group_command_kicked'],
+        )
+    ).result()
+
+    # # sleep
+    # time.sleep(env.SLEEP_SECONDS)
     #
-    # if update.effective_user.id == env.BOT_OWNER_ID:
-    #     print('is owner')
-    #
-    # # update.message.reply_text(
-    # #     text=kvs['command_start'].format(
-    # #         owner_name=kvs['owner_name'],
-    # #         owner_username=kvs['owner_username'],
-    # #     ),
-    # #     reply_to_message_id=update.effective_message.message_id,
-    # # )
+    # # delete tip message
+    # tip_message.delete()

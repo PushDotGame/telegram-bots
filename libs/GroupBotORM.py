@@ -3,11 +3,11 @@ from peewee import *
 from playhouse.apsw_ext import APSWDatabase
 from . import settings
 
-import logging
-
-logger = logging.getLogger('peewee')
-logger.addHandler(logging.StreamHandler())
-logger.setLevel(logging.DEBUG)
+# import logging
+#
+# logger = logging.getLogger('peewee')
+# logger.addHandler(logging.StreamHandler())
+# logger.setLevel(logging.DEBUG)
 
 db_bot = APSWDatabase(os.path.join(settings.BOT_DATA_DIR, 'bot.db'))
 

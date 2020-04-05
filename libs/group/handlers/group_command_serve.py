@@ -33,7 +33,7 @@ def _permission_attr(key, chat_member: telegram.ChatMember, chat: telegram.Chat 
 def _group_command_serve(update, context):
     if update.effective_user.id == env.BOT_OWNER_ID:
         message = update.message.reply_text(
-            text=kvs['command_serve_updating'],
+            text=kvs['group_command_serve_updating'],
         ).result()
 
         try:
@@ -201,12 +201,12 @@ def _group_command_serve(update, context):
                     chat_admin.save()
 
             message.edit_text(
-                text='{}\n\n{}'.format(kvs['command_serve_updating'], kvs['command_serve_finished'])
+                text='{}\n\n{}'.format(kvs['group_command_serve_updating'], kvs['group_command_serve_finished'])
             )
 
         except Exception as e:
             message.edit_text(
-                text='{}\n\n*Exception:*\n`{}`'.format(kvs['command_serve_updating'], e)
+                text='{}\n\n*Exception:*\n`{}`'.format(kvs['group_command_serve_updating'], e)
             )
 
 

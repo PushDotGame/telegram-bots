@@ -7,3 +7,4 @@ dotenv.load_dotenv(dotenv_path=os.path.join(settings.ENV_DIR, '.bot.{}'.format(s
 
 BOT_OWNER_ID = int(os.getenv("OWNER_ID"))
 FULL_NAME_TOO_LONG = int(os.getenv("FULL_NAME_TOO_LONG") or 30)
+SLEEP_SECONDS = int(os.getenv("SLEEP_SECONDS") or 60)
