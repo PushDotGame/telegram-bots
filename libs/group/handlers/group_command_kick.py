@@ -13,7 +13,7 @@ FC = FileCache(env.settings.BOT_CACHE_DIR)
 def attach(dispatcher: Dispatcher):
     dispatcher.add_handler(
         CommandHandler(
-            command='kick',
+            command='out',
             filters=Filters.group,
             callback=_group_command_kick,
         )
