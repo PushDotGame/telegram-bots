@@ -43,11 +43,15 @@ def _group_text(update, context):
 
                 # use reply
                 if ask.topic.use_reply:
-                    update.message.reply_text(text=text)
+                    update.message.reply_text(
+                        text=text,
+                        disable_web_page_preview=True,
+                    )
                 else:
                     context.bot.send_message(
                         chat_id=update.effective_chat.id,
                         text=text,
+                        disable_web_page_preview=True,
                     )
 
             break

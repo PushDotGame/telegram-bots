@@ -50,6 +50,7 @@ def _new_chat_members(update, context):
             members=', '.join(members),
             rules=kvs['rules']
         ),
+        disable_web_page_preview=True,
     ).result()
 
     # cache, then delete the previous

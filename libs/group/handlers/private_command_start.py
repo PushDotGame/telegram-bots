@@ -23,4 +23,5 @@ def _private_command_start(update, context):
             owner_username=kvs['owner_username'],
         ),
         reply_to_message_id=update.effective_message.message_id,
+        disable_web_page_preview=True,
     )
