@@ -1,8 +1,10 @@
 from libs.GroupBotORM import *
 
 asks = (Ask
-        .select(Ask, Topic, Reply)
-        .join(Topic, JOIN.LEFT_OUTER)
-        .join(Reply, JOIN.LEFT_OUTER)
+        .select()
+        .join(Topic)
+        .join(Reply)
         .where((Ask.active == True) & (Topic.active == True) & (Reply.active == True))
+        .prefetch(Topic, Reply)
         )
+

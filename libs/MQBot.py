@@ -38,6 +38,14 @@ class MQBot(Bot):
         )
 
     @mq.queuedmessage
+    def edit_message_text(self, *args, **kwargs):
+        return super(MQBot, self).edit_message_text(
+            parse_mode=self._parse_mode,
+            *args,
+            **kwargs
+        )
+
+    @mq.queuedmessage
     def delete_message(self, *args, **kwargs):
         return super(MQBot, self).delete_message(
             *args, **kwargs

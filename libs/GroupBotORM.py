@@ -3,13 +3,102 @@ from peewee import *
 from playhouse.apsw_ext import APSWDatabase
 from . import settings
 
-# bot = APSWDatabase(os.path.join(settings.BOT_DATA_DIR, 'bot.db'))
-qa = APSWDatabase(os.path.join(settings.BOT_DATA_DIR, 'qa.db'))
+import logging
+
+logger = logging.getLogger('peewee')
+logger.addHandler(logging.StreamHandler())
+logger.setLevel(logging.DEBUG)
+
+db_bot = APSWDatabase(os.path.join(settings.BOT_DATA_DIR, 'bot.db'))
+
+
+class BotModel(Model):
+    class Meta:
+        database = db_bot
+
+
+class Chat(BotModel):
+    id = IntegerField(primary_key=True)
+    type = CharField(max_length=16)
+    title = CharField(null=True)
+    can_send_messages = BooleanField()
+    can_send_media_messages = BooleanField()
+    can_send_polls = BooleanField()
+    can_send_other_messages = BooleanField()
+    can_add_web_page_previews = BooleanField()
+    can_change_info = BooleanField()
+    can_invite_users = BooleanField()
+    can_pin_messages = BooleanField()
+
+    def __str__(self):
+        return '<Chat #{id} {title}>'.format(
+            id=self.id,
+            title=self.title,
+        )
+
+
+class User(BotModel):
+    id = IntegerField(primary_key=True)
+    is_bot = BooleanField()
+    first_name = CharField(max_length=96, null=True)
+    last_name = CharField(max_length=96, null=True)
+    username = CharField(max_length=32, null=True)
+
+    def __str__(self):
+        return '<User #{id}>'.format(
+            id=self.id,
+        )
+
+
+class ChatAdmin(BotModel):
+    chat = ForeignKeyField(Chat, backref='admins')
+    user = ForeignKeyField(User, backref='admin_chats')
+
+    status = CharField(max_length=16)
+    custom_title = CharField(max_length=16, null=True)
+    until_date = DateTimeField(null=True)
+    can_be_edited = BooleanField(null=True)
+
+    can_change_info = BooleanField(null=True)
+    can_post_messages = BooleanField(null=True)
+    can_edit_messages = BooleanField(null=True)
+    can_delete_messages = BooleanField(null=True)
+    can_invite_users = BooleanField(null=True)
+    can_restrict_members = BooleanField(null=True)
+    can_pin_messages = BooleanField(null=True)
+    can_promote_members = BooleanField(null=True)
+    is_member = BooleanField(null=True)
+    can_send_messages = BooleanField(null=True)
+    can_send_media_messages = BooleanField(null=True)
+    can_send_polls = BooleanField(null=True)
+    can_send_other_messages = BooleanField(null=True)
+    can_add_web_page_previews = BooleanField(null=True)
+
+    def __str__(self):
+        return '<ChatAdmin #{id}>'.format(
+            id=self.id,
+        )
+
+
+db_kv = APSWDatabase(os.path.join(settings.BOT_DATA_DIR, 'kvs.db'))
+
+
+class ConfModel(Model):
+    class Meta:
+        database = db_kv
+
+
+class KeyValue(ConfModel):
+    key = CharField(max_length=32)
+    value = TextField(null=True)
+
+
+db_qa = APSWDatabase(os.path.join(settings.BOT_DATA_DIR, 'qa.db'))
 
 
 class QAModel(Model):
     class Meta:
-        database = qa
+        database = db_qa
 
 
 class Topic(QAModel):

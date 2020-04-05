@@ -39,3 +39,8 @@ def append2file(path_to_file: str, line):
     return path_to_file
 
 
+def overwrite_none(a, b):
+    if a is not None:
+        return a
+
+    return b

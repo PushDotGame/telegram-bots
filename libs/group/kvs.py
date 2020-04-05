@@ -1,4 +1,6 @@
-text_values = {
+from ..GroupBotORM import *
+
+kvs = {
     'owner_name': 'your-name',
     'owner_username': 'your-username',
 
@@ -9,5 +11,13 @@ text_values = {
     'welcome': 'Welcome {members}'
                '\n\n{rules}',
 
-    'rules': 'Rules text.',
+    'rules': 'rules-text',
+
+    'command_serve_updating': '`Updating ..`',
+    'command_serve_finished': '*Update accomplished.*',
 }
+
+rows = KeyValue.select()
+
+for row in rows:
+    kvs[row.key] = row.value.replace('\r\n', '\n')
