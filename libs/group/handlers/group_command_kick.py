@@ -1,18 +1,19 @@
-import time
 from telegram.ext import (Dispatcher, CommandHandler, Filters)
 from telegram.ext.dispatcher import run_async
-from conf import env
 from libs.GroupBotORM import *
 from libs.group.kvs import kvs
 from . import functions as hf
+from conf import env
+from libs.FileCache import FileCache
 
-COMMAND = 'kick'
+# file cache
+FC = FileCache(env.settings.BOT_CACHE_DIR)
 
 
 def attach(dispatcher: Dispatcher):
     dispatcher.add_handler(
         CommandHandler(
-            command=COMMAND,
+            command='kick',
             filters=Filters.group,
             callback=_group_command_kick,
         )
@@ -35,22 +36,20 @@ def _group_command_kick(update, context):
         update.effective_message.delete()
         return
 
+    # cache user id
+    key = '{chat_id}_kick_user_id'.format(chat_id=update.effective_chat.id)
+    FC.put(key, update.effective_message.reply_to_message.from_user.id)
+
     # kick
     update.effective_chat.kick_member(
         user_id=update.effective_message.reply_to_message.from_user.id
-    )
+    ).result()
 
     # send tip message
-    tip_message = context.bot.send_message(
+    context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text='`{full_name}`\n\n{preset}'.format(
+        text='_{full_name}_\n\n{preset}'.format(
             full_name=update.effective_message.reply_to_message.from_user.full_name,
             preset=kvs['group_command_kicked'],
         )
     ).result()
-
-    # # sleep
-    # time.sleep(env.SLEEP_SECONDS)
-    #
-    # # delete tip message
-    # tip_message.delete()

@@ -54,7 +54,7 @@ def _new_chat_members(update, context):
 
     # cache, then delete the previous
     if message:
-        key = '{}_welcome'.format(update.effective_chat.id)
+        key = '{chat_id}_welcome'.format(chat_id=update.effective_chat.id)
 
         previous_id = FC.get(key)
         FC.put(key, message.message_id)

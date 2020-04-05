@@ -1,8 +1,7 @@
 import random
 from telegram.ext import (Dispatcher, MessageHandler, Filters)
 from telegram.ext.dispatcher import run_async
-from ..kvs import kvs
-from ..qa import asks
+from libs.group.qa import asks
 
 
 def attach(dispatcher: Dispatcher):

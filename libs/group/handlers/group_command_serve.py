@@ -5,13 +5,11 @@ from conf import env
 from libs.GroupBotORM import *
 from libs.group.kvs import kvs
 
-COMMAND = 'serve'
-
 
 def attach(dispatcher: Dispatcher):
     dispatcher.add_handler(
         CommandHandler(
-            command=COMMAND,
+            command='serve',
             filters=Filters.group,
             callback=_group_command_serve,
         )
