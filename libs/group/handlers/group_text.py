@@ -1,6 +1,7 @@
 import random
 from telegram.ext import (Dispatcher, MessageHandler, Filters)
 from telegram.ext.dispatcher import run_async
+from libs.group.kvs import kvs
 from libs.group.qa import asks
 
 
@@ -36,15 +37,22 @@ def _group_text(update, context):
 
                 # show title
                 if topic.show_title:
-                    text = '*《{}》*' \
-                           '\n\n{}'.format(topic.title, '\n\n'.join(reply.lines))
+                    text = '`《{title}》`' \
+                           '\n\n{content}'.format(title=topic.title,
+                                                  content='\n\n'.join(reply.lines),
+                                                  )
                 else:
                     text = '\n\n'.join(reply.lines)
+
+                text = text.format(
+                    base_url=kvs['base_url'],
+                    owner_name=kvs['owner_name']
+                )
 
                 # use reply
                 if ask.topic.use_reply:
                     update.message.reply_text(
-                        text=text,
+                        text=text.format(),
                         disable_web_page_preview=True,
                     )
                 else:

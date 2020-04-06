@@ -48,7 +48,8 @@ def _new_chat_members(update, context):
         chat_id=update.effective_chat.id,
         text=kvs['welcome'].format(
             members=', '.join(members),
-            rules=kvs['rules']
+            base_url=kvs['base_url'],
+            rules=kvs['rules'],
         ),
         disable_web_page_preview=True,
     ).result()
