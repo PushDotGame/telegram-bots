@@ -124,6 +124,7 @@ class Ask(QAModel):
     active = BooleanField(default=True)
     mode = SmallIntegerField(default=0)
     words = TextField(null=True)
+    max = IntegerField(default=0, null=True)
     remark = CharField(null=True)
 
     def __str__(self):
@@ -195,6 +196,9 @@ class Ask(QAModel):
         return results
 
     def match(self, payload: str):
+        if self.max and len(payload) > self.max:
+            return False
+
         mixed_list = self._mix(self.list2)
 
         if self.MODE_STRICT == self.mode:
