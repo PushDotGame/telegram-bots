@@ -16,7 +16,7 @@ def attach(dispatcher: Dispatcher):
 
 @run_async
 def _group_text(update, context):
-    message_text = update.effective_message.text.strip()
+    message_text = update.effective_message.text.strip().lower()
 
     for ask in asks:
         if ask.match(message_text):
