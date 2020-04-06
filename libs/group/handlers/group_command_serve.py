@@ -79,7 +79,6 @@ def _group_command_serve(update, context):
             # admins
             for admin in effective_chat.get_administrators():
                 is_creator = admin.status == telegram.ChatMember.CREATOR
-                print('admin:', admin)
 
                 # user
                 user, created = User.get_or_create(
