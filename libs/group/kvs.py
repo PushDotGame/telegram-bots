@@ -13,7 +13,7 @@ kvs = {
     'welcome': 'Welcome {members}'
                '\n\n{rules}',
 
-    'rules': 'rules-text',
+    'rules': 'no rules text here',
 
     'group_command_serve_updating': '`Updating ..`',
     'group_command_serve_finished': '*Update accomplished.*',

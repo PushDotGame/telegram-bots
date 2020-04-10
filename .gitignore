@@ -1,7 +1,7 @@
 .idea/
 .data/
 presets/bot*
-debug.py
+debug*.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

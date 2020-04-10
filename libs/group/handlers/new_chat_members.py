@@ -28,41 +28,44 @@ def _delete_notification_if_full_name_too_long(members, message: telegram.Messag
 def _new_chat_members(update, context):
     """When new member(s) joined a group, send welcome text, and remove the previous"""
 
-    # delete notification message, if a full name is too long
-    _delete_notification_if_full_name_too_long(update.message.new_chat_members, update.effective_message)
+    if env.REMOVE_FOOTPRINT:
+        update.effective_message.delete()
+    else:
+        # delete notification message, if a full name is too long
+        _delete_notification_if_full_name_too_long(update.message.new_chat_members, update.effective_message)
 
-    # # when bot joined
-    # for member in update.message.new_chat_members:
-    #     if member.id == context.bot.id:
-    #         update.message.reply_text(text='Hi')
-    #         break
+        # # when bot joined
+        # for member in update.message.new_chat_members:
+        #     if member.id == context.bot.id:
+        #         update.message.reply_text(text='Hi')
+        #         break
 
-    # new members
-    members = list()
-    for member in update.message.new_chat_members:
-        if len(member.full_name) <= env.FULL_NAME_TOO_LONG:
-            members.append(member.mention_markdown())
+        # new members
+        members = list()
+        for member in update.message.new_chat_members:
+            if len(member.full_name) <= env.FULL_NAME_TOO_LONG:
+                members.append(member.mention_markdown())
 
-    # send welcome
-    message = context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text=kvs['welcome'].format(
-            members=', '.join(members),
-            base_url=kvs['base_url'],
-            rules=kvs['rules'],
-        ),
-        disable_web_page_preview=True,
-    ).result()
+        # send welcome
+        message = context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=kvs['welcome'].format(
+                members=', '.join(members),
+                base_url=kvs['base_url'],
+                rules=kvs['rules'],
+            ),
+            disable_web_page_preview=True,
+        ).result()
 
-    # cache, then delete the previous
-    if message:
-        key = '{chat_id}_welcome'.format(chat_id=update.effective_chat.id)
+        # cache, then delete the previous
+        if message:
+            key = '{chat_id}_welcome'.format(chat_id=update.effective_chat.id)
 
-        previous_id = FC.get(key)
-        FC.put(key, message.message_id)
+            previous_id = FC.get(key)
+            FC.put(key, message.message_id)
 
-        if previous_id:
-            context.bot.delete_message(
-                chat_id=update.effective_chat.id,
-                message_id=previous_id,
-            )
+            if previous_id:
+                context.bot.delete_message(
+                    chat_id=update.effective_chat.id,
+                    message_id=previous_id,
+                )
