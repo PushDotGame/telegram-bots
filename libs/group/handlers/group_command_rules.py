@@ -29,6 +29,8 @@ def attach(dispatcher: Dispatcher):
 
 @run_async
 def _group_command_rules(update, context):
-    update.message.reply_text(
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
         text=kvs['rules'],
+        disable_web_page_preview=True,
     )
