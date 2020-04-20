@@ -1,7 +1,7 @@
 import telegram
 from telegram.ext import (Dispatcher, CommandHandler, Filters)
 from telegram.ext.dispatcher import run_async
-from conf import env
+from conf import group_bot
 from libs.GroupBotORM import *
 from libs.group.kvs import kvs
 
@@ -29,7 +29,7 @@ def _permission_attr(key, chat_member: telegram.ChatMember, chat: telegram.Chat 
 
 @run_async
 def _group_command_serve(update, context):
-    if update.effective_user.id == env.BOT_OWNER_ID:
+    if update.effective_user.id == group_bot.OWNER_ID:
         message = update.message.reply_text(
             text=kvs['group_command_serve_updating'],
         ).result()

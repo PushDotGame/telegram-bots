@@ -1,13 +1,13 @@
 from telegram.ext import (Dispatcher, CommandHandler, Filters)
 from telegram.ext.dispatcher import run_async
-from libs.GroupBotORM import *
+# from libs.GroupBotORM import *
 from libs.group.kvs import kvs
 from . import functions as hf
-from conf import env
+from conf import bot as be
 from libs.FileCache import FileCache
 
 # file cache
-FC = FileCache(env.settings.BOT_CACHE_DIR)
+FC = FileCache(be.BOT_CACHE_DIR)
 
 
 def attach(dispatcher: Dispatcher):
@@ -32,7 +32,7 @@ def _group_command_kick(update, context):
     if update.effective_message.reply_to_message is None:
         return
 
-    if update.effective_message.reply_to_message.from_user.id == settings.BOT_ID:
+    if update.effective_message.reply_to_message.from_user.id == be.BOT_ID:
         update.effective_message.delete()
         return
 

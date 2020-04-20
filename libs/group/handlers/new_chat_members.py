@@ -4,11 +4,12 @@ import random
 from telegram.ext import (Dispatcher, MessageHandler, Filters)
 from telegram.ext.dispatcher import run_async
 from libs.group.kvs import kvs
-from conf import env
+from conf import group_bot
+from conf import bot as be
 from libs.FileCache import FileCache
 
 # file cache
-FC = FileCache(env.settings.BOT_CACHE_DIR)
+FC = FileCache(be.BOT_CACHE_DIR)
 
 
 def attach(dispatcher: Dispatcher):
@@ -22,7 +23,7 @@ def attach(dispatcher: Dispatcher):
 
 def _delete_notification_if_full_name_too_long(members, message: telegram.Message):
     for member in members:
-        if len(member.full_name) > env.FULL_NAME_TOO_LONG:
+        if len(member.full_name) > group_bot.FULL_NAME_TOO_LONG:
             message.delete()
 
 
@@ -30,7 +31,7 @@ def _delete_notification_if_full_name_too_long(members, message: telegram.Messag
 def _new_chat_members(update, context):
     """When new member(s) joined a group, send welcome text, and remove the previous"""
 
-    if env.REMOVE_FOOTPRINT:
+    if group_bot.REMOVE_FOOTPRINT:
         update.effective_message.delete()
     else:
         # delete notification message, if a full name is too long
@@ -46,7 +47,7 @@ def _new_chat_members(update, context):
         cache_members_key = '{chat_id}_welcome_members'.format(chat_id=update.effective_chat.id)
         members = FC.get(cache_members_key, [])
         for member in update.message.new_chat_members:
-            if len(member.full_name) <= env.FULL_NAME_TOO_LONG and member.mention_markdown() not in members:
+            if len(member.full_name) <= group_bot.FULL_NAME_TOO_LONG and member.mention_markdown() not in members:
                 members.append(member.mention_markdown())
 
         # cache timestamp

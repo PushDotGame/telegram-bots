@@ -1,10 +1,10 @@
 from telegram.ext import (Dispatcher, MessageHandler, Filters)
 from telegram.ext.dispatcher import run_async
-from conf import env
+from conf import bot as be
 from libs.FileCache import FileCache
 
 # file cache
-FC = FileCache(env.settings.BOT_CACHE_DIR)
+FC = FileCache(be.BOT_CACHE_DIR)
 
 
 def attach(dispatcher: Dispatcher):

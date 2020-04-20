@@ -27,6 +27,10 @@ for getting a group/channel id.
 工作良好，你也许只需要它一次，用于取得群组或频道的 ID
 
 
+### Group BOT 群组辅助机器人
+
+Auto match and reply, alpha now.
+
 
 ## A brief guide for deploy
 

@@ -1,7 +1,8 @@
-import libs.settings as settings
+import conf.bot as be
 import libs.shell as shell
+from libs.MQBot import MQBot
 from telegram import ParseMode
-from telegram.ext import (Updater, Defaults, Filters, CommandHandler, MessageHandler)
+from telegram.ext import (Updater, Filters, CommandHandler, MessageHandler)
 
 
 def private_command_start(update, context):
@@ -55,18 +56,14 @@ def new_chat_members(update, context):
 
 
 def main():
-    # defaults
-    defaults = Defaults(
-        parse_mode=ParseMode.MARKDOWN,
-        disable_web_page_preview=True
-    )
+    # bot
+    bot = MQBot(token=be.BOT_TOKEN)
 
     # init python-telegram-bot: updater and dispatcher
     updater = Updater(
-        token=settings.BOT_TOKEN,
+        bot=bot,
         use_context=True,
-        defaults=defaults,
-        request_kwargs=settings.REQUEST_KWARGS,
+        request_kwargs=be.REQUEST_KWARGS,
     )
 
     # dispatcher
@@ -107,12 +104,12 @@ def main():
 
     def start():
         updater.start_webhook(
-            listen=settings.LISTEN,
-            port=settings.BOT_PORT,
-            url_path=settings.BOT_ID,
-            key=settings.PATH_TO_KEY,
-            cert=settings.PATH_TO_CERT,
-            webhook_url=settings.WEBHOOK_URL,
+            listen=be.LISTEN,
+            port=be.BOT_PORT,
+            url_path=be.BOT_ID,
+            key=be.PATH_TO_KEY,
+            cert=be.PATH_TO_CERT,
+            webhook_url=be.WEBHOOK_URL,
         )
         print('updater started.')
         return
@@ -130,7 +127,7 @@ def main():
 
     start()
 
-    if settings.DEBUG:
+    if be.DEBUG_MODE:
         shell.embed()
 
 
