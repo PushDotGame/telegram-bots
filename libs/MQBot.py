@@ -26,13 +26,15 @@ class MQBot(Bot):
     def stop_mq(self):
         try:
             self._msg_queue.stop()
-        except:
+        except Exception as e:
+            print(e)
             pass
 
     @mq.queuedmessage
     def send_message(self, *args, **kwargs):
         return super(MQBot, self).send_message(
             parse_mode=self._parse_mode,
+            disable_web_page_preview=True,
             *args,
             **kwargs
         )
