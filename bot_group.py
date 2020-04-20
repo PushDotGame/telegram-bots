@@ -27,6 +27,7 @@ def main():
 
     # group: `/kick`
     handlers.group_command_kick.attach(dp)
+    handlers.group_command_rules.attach(dp)
 
     # group: text, new, left
     handlers.group_text.attach(dp)

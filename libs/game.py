@@ -23,7 +23,7 @@ def block_number():
 def status():
     payload = GAME_CONTRACT.functions.getStatus().call()
     return {
-        'block_number': w3.eth.blockNumber,
+        'block_number': block_number(),
         'timer': payload[0],
         'round_counter': payload[1],
         'player_counter': payload[2],

@@ -1,6 +1,5 @@
 from telegram.ext import (Dispatcher, CommandHandler, Filters)
 from telegram.ext.dispatcher import run_async
-# from libs.GroupBotORM import *
 from libs.group.kvs import kvs
 from . import functions as hf
 from conf import bot as be
