@@ -1,0 +1,949 @@
+[
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "serial",
+        "type": "uint256"
+      }
+    ],
+    "name": "pin",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "text",
+        "type": "bytes"
+      },
+      {
+        "internalType": "address payable",
+        "name": "adviser",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "playerName",
+        "type": "bytes"
+      }
+    ],
+    "name": "pushWithAdviser",
+    "outputs": [],
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "transfer",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "cookieContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "subsidyContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address payable",
+        "name": "devFund",
+        "type": "address"
+      },
+      {
+        "internalType": "address payable[]",
+        "name": "shareholderAccounts",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "shareholderEthers",
+        "type": "uint256[]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "fallback"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "unpin",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "balanceOf",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "block2timestamp",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "decimals",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "serial",
+        "type": "uint256"
+      }
+    ],
+    "name": "getCookie",
+    "outputs": [
+      {
+        "internalType": "address payable",
+        "name": "player",
+        "type": "address"
+      },
+      {
+        "internalType": "address payable",
+        "name": "adviser",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "playerName",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "adviserName",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint256",
+        "name": "playerWeis",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "adviserWeis",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "messageSerial",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "text",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint256",
+        "name": "blockNumber",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "serial",
+        "type": "uint256"
+      }
+    ],
+    "name": "getMessage",
+    "outputs": [
+      {
+        "internalType": "address payable",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "playerName",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "text",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint256",
+        "name": "blockNumber",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "getPlayer",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "serial",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "playerName",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "adviserName",
+        "type": "bytes"
+      },
+      {
+        "internalType": "address payable",
+        "name": "adviser",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "messageCounter",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "cookieCounter",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "followerCounter",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "followerMessageCounter",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "followerCookieCounter",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "bonusWeis",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "surpriseWeis",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "serial",
+        "type": "uint256"
+      }
+    ],
+    "name": "getPlayerCookie",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "cookieSerial",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address payable",
+        "name": "player",
+        "type": "address"
+      },
+      {
+        "internalType": "address payable",
+        "name": "adviser",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "playerName",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "adviserName",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint256",
+        "name": "playerWeis",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "adviserWeis",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "messageSerial",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "text",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint256",
+        "name": "blockNumber",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "getPlayerDisplay",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "messageCounter",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "pinnedMessageSerial",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "messageSerial",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "text",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint256",
+        "name": "blockNumber",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "serial",
+        "type": "uint256"
+      }
+    ],
+    "name": "getPlayerFollower",
+    "outputs": [
+      {
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "serial",
+        "type": "uint256"
+      }
+    ],
+    "name": "getPlayerFollowerCookie",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "cookieSerial",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address payable",
+        "name": "player",
+        "type": "address"
+      },
+      {
+        "internalType": "address payable",
+        "name": "adviser",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "playerName",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "adviserName",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint256",
+        "name": "playerWeis",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "adviserWeis",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "messageSerial",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "text",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint256",
+        "name": "blockNumber",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "serial",
+        "type": "uint256"
+      }
+    ],
+    "name": "getPlayerMessage",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "messageSerial",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "text",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint256",
+        "name": "blockNumber",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "getPlayerPrime",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "playerName",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint256",
+        "name": "pinnedMessageSerial",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "topPlayerPosition",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "shareholderPosition",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint256",
+        "name": "shareholderStakingWeis",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "shareholderProfitWeis",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "shareholderFirstBlockNumber",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "serial",
+        "type": "uint256"
+      }
+    ],
+    "name": "getRound",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "openedBlock",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "closingBlock",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "closedTimestamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "openingWinnerFund",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "closingWinnerFund",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address payable",
+        "name": "opener",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "openerBonusWeis",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "serial",
+        "type": "uint256"
+      }
+    ],
+    "name": "getRoundWinners",
+    "outputs": [
+      {
+        "internalType": "uint8[10]",
+        "name": "serials",
+        "type": "uint8[10]"
+      },
+      {
+        "internalType": "uint256[10]",
+        "name": "winnersMessageSerials",
+        "type": "uint256[10]"
+      },
+      {
+        "internalType": "uint256[10]",
+        "name": "winnersWeis",
+        "type": "uint256[10]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "serial",
+        "type": "uint256"
+      }
+    ],
+    "name": "getShareholderBid",
+    "outputs": [
+      {
+        "internalType": "address payable",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "playerName",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint256",
+        "name": "stakingBefore",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "stakingAfter",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "blockNumber",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getShareholders",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "bidCounter",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address payable[6]",
+        "name": "accounts",
+        "type": "address[6]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getStatus",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "timer",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "roundCounter",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "playerCounter",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "messageCounter",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "cookieCounter",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "cookieFund",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "winnerFund",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "surpriseIssued",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "bonusIssued",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "cookieIssued",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "shareholderIssued",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getTopPlayers",
+    "outputs": [
+      {
+        "internalType": "address payable[20]",
+        "name": "accounts",
+        "type": "address[20]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "name",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "serial2player",
+    "outputs": [
+      {
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "symbol",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "totalSupply",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
