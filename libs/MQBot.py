@@ -34,7 +34,7 @@ class MQBot(Bot):
     def send_message(self, *args, **kwargs):
         return super(MQBot, self).send_message(
             parse_mode=self._parse_mode,
-            disable_web_page_preview=True,
+            # disable_web_page_preview=True,
             *args,
             **kwargs
         )
