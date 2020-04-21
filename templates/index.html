@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="text-4xl font-semibold">{{ topics | length }} Topics</h1>
+
+<ul class="my-6">
+    {% for topic in topics %}
+    <li>
+        <a href="/topic/{{ topic.id }}">#{{ topic.id }} - {{ topic.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<style>
+    li {
+        line-height: 1.9;
+    }
+</style>
+{% endblock %}

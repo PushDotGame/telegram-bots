@@ -17,9 +17,11 @@ if PROXY_URL:
     }
 
 # bot session name
-if len(sys.argv) < 2:
-    exit('Please run `python3 {} <bot_session_name>`'.format(sys.argv[0]))
-BOT_SESSION_NAME = sys.argv[1].lower()
+BOT_SESSION_NAME = os.getenv("BOT_SESSION_NAME", None)
+if BOT_SESSION_NAME is None:
+    if len(sys.argv) < 2:
+        exit('Please run `python3 {} <bot_session_name>`'.format(sys.argv[0]))
+    BOT_SESSION_NAME = sys.argv[1].lower()
 
 # bot config
 ENV_DIR = fn.touch_dirs(os.getenv("ENV_DIR") or DATA_DIR)

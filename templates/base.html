@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.2.0/tailwind.min.css" rel="stylesheet">
+    <title>Topics / Asks / Replies</title>
+</head>
+<body>
+
+<div class="container mx-auto pt-4">
+    {% block content %}{% endblock %}
+
+    <footer class="mt-6 font-mono text-gray-500">
+        Session: {{ session_name }}
+    </footer>
+</div>
+
+</body>
+</html>
+

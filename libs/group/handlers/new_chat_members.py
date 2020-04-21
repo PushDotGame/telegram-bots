@@ -1,7 +1,7 @@
 import telegram
 import time
 import random
-from telegram.ext import (Dispatcher, MessageHandler, Filters)
+from telegram.ext import (Dispatcher, MessageHandler, CommandHandler, Filters)
 from telegram.ext.dispatcher import run_async
 from libs.group.kvs import kvs
 from conf import group_bot
@@ -17,6 +17,14 @@ def attach(dispatcher: Dispatcher):
         MessageHandler(
             filters=Filters.status_update.new_chat_members,
             callback=_new_chat_members,
+        )
+    )
+
+    dispatcher.add_handler(
+        CommandHandler(
+            command='welcome',
+            filters=Filters.group,
+            callback=_group_command_welcome,
         )
     )
 
@@ -121,3 +129,75 @@ def _new_chat_members(update, context):
                         )
                 except Exception as e:
                     print(e)
+
+
+@run_async
+def _group_command_welcome(update, context):
+    # new members
+    cache_members_key = '{chat_id}_welcome_members'.format(chat_id=update.effective_chat.id)
+    members = FC.get(cache_members_key, [])
+
+    # cache timestamp
+    timestamp_key = '{chat_id}_welcome_timestamp'.format(chat_id=update.effective_chat.id)
+    FC.put(timestamp_key, time.time())
+
+    # forget: cache members
+    FC.forget(cache_members_key)
+
+    # send welcome
+    message = context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=kvs['welcome'].format(
+            members=', '.join(members),
+            base_url=kvs['base_url'],
+            rules=kvs['rules'],
+        ),
+        disable_web_page_preview=True,
+    ).result()
+
+    # cache, then delete the previous
+    if message:
+        try:
+            key = '{chat_id}_welcome'.format(chat_id=update.effective_chat.id)
+
+            previous_id = FC.get(key)
+            FC.put(key, message.message_id)
+
+            if previous_id:
+                context.bot.delete_message(
+                    chat_id=update.effective_chat.id,
+                    message_id=previous_id,
+                )
+        except Exception as e:
+            print(e)
+
+    # welcome 1
+    if 'welcome1' in kvs:
+        time.sleep(random.randint(5, 10))
+
+        # send welcome
+        message1 = context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=kvs['welcome1'].format(
+                members=', '.join(members),
+                base_url=kvs['base_url'],
+                rules=kvs['rules'],
+            ),
+            disable_web_page_preview=True,
+        ).result()
+
+        # cache, then delete the previous
+        if message1:
+            try:
+                key1 = '{chat_id}_welcome1'.format(chat_id=update.effective_chat.id)
+
+                previous_id = FC.get(key1)
+                FC.put(key1, message1.message_id)
+
+                if previous_id:
+                    context.bot.delete_message(
+                        chat_id=update.effective_chat.id,
+                        message_id=previous_id,
+                    )
+            except Exception as e:
+                print(e)

@@ -29,10 +29,12 @@ def main():
     handlers.group_command_kick.attach(dp)
     handlers.group_command_rules.attach(dp)
 
-    # group: text, new, left
-    handlers.group_text.attach(dp)
+    # group: new, left
     handlers.new_chat_members.attach(dp)
     handlers.left_chat_member.attach(dp)
+
+    # group: text
+    handlers.group_text.attach(dp)
 
     def start():
         updater.start_webhook(
