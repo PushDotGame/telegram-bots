@@ -51,7 +51,7 @@ def main():
         #          + status['shareholder_issued']
 
         # rename
-        rename(last_name='🚀🚀 {} ETH++'.format(
+        rename(last_name='🚀🚀 {} ETH++ 新游启动 点击来撩'.format(
             fund.quantize(pe.DECIMAL),
         ))
 

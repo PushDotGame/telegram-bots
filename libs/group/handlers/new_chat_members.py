@@ -22,7 +22,7 @@ def attach(dispatcher: Dispatcher):
 
     dispatcher.add_handler(
         CommandHandler(
-            command='welcome',
+            command='sayhi',
             filters=Filters.group,
             callback=_group_command_welcome,
         )

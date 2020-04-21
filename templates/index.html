@@ -6,10 +6,19 @@
 <ul class="my-6">
     {% for topic in topics %}
     <li>
-        <a href="/topic/{{ topic.id }}">#{{ topic.id }} - {{ topic.title }}</a>
+        <a href="/topic/{{ topic.id }}">#{{ topic.id }} - {{ topic.title }} - Reply({{ topic.use_reply }}) - Title({{ topic.show_title }})</a>
     </li>
     {% endfor %}
 </ul>
+
+<form method="post">
+    <label for="name">名字</label>
+    <input type="text" name="name" id="name"><br>
+    <label for="occupation">职业</label>
+    <input type="text" name="occupation" id="occupation"><br>
+    <input type="submit" name="submit" value="登录">
+</form>
+
 
 <style>
     li {
