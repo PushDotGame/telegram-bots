@@ -1,28 +1,119 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="text-4xl font-semibold">{{ topics | length }} Topics</h1>
+<!--<h1>{{ topics | length }} Topics</h1>-->
 
-<ul class="my-6">
+<table class="table table-sm table-striped table-hover text-center">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Topic</th>
+        <th scope="col">Use reply</th>
+        <th scope="col">Show title</th>
+    </tr>
+    </thead>
+    <tbody>
     {% for topic in topics %}
-    <li>
-        <a href="/topic/{{ topic.id }}">#{{ topic.id }} - {{ topic.title }} - Reply({{ topic.use_reply }}) - Title({{ topic.show_title }})</a>
-    </li>
+    <tr class="">
+        <td class="align-middle">
+            {% if topic.active %}
+            <a href="/deactivate-topic/{{ topic.id }}" class="btn btn-block btn-sm btn-success">
+                {{ topic.id }}
+            </a>
+            {% else %}
+            <a href="/activate-topic/{{ topic.id }}" class="btn btn-block btn-sm btn-secondary">
+                {{ topic.id }}
+            </a>
+            {% endif %}
+        </td>
+        <td class="align-middle">
+            <a href="/topic/{{ topic.id }}">
+                {{ topic.title }}
+            </a>
+        </td>
+        <td class="align-middle">
+            {% if topic.use_reply %}
+            <a href="/topic/dont-use-reply/{{ topic.id }}" class="btn btn-block btn-sm btn-success">
+                Yes
+            </a>
+            {% else %}
+            <a href="/topic/use-reply/{{ topic.id }}" class="btn btn-block btn-sm btn-outline-secondary">
+                No
+            </a>
+            {% endif %}
+        </td>
+        <td class="align-middle">
+            {% if topic.show_title %}
+            <a href="/topic/dont-show-title/{{ topic.id }}" class="btn btn-block btn-sm btn-success">
+                Yes
+            </a>
+            {% else %}
+            <a href="/topic/show-title/{{ topic.id }}" class="btn btn-block btn-sm btn-outline-secondary">
+                No
+            </a>
+            {% endif %}
+        </td>
+    </tr>
     {% endfor %}
-</ul>
+    </tbody>
+</table>
 
-<form method="post">
-    <label for="name">名字</label>
-    <input type="text" name="name" id="name"><br>
-    <label for="occupation">职业</label>
-    <input type="text" name="occupation" id="occupation"><br>
-    <input type="submit" name="submit" value="登录">
+<form method="post"
+      action="/add-topic"
+      class="my-4 border border-primary rounded p-4 bg-light">
+    <div class="form-row">
+        <div class="form-group col-md-8">
+            <label for="inputTopicTitle">New topic</label>
+            <input id="inputTopicTitle"
+                   name="title"
+                   type="text"
+                   class="form-control"
+                   placeholder="Topic title">
+        </div>
+        <div class="form-group col-md-2">
+            <label for="selectTopicUseReply">Use reply</label>
+            <select id="selectTopicUseReply"
+                    name="useReply"
+                    class="custom-select">
+                <option value="True" selected>Yes</option>
+                <option value="False">No</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="selectTopicShowTitle">Show title</label>
+            <select id="selectTopicShowTitle"
+                    name="showTitle"
+                    class="custom-select">
+                <option value="True">Yes</option>
+                <option value="False" selected>No</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            <label for="selectTopicActive">Active</label>
+            <select id="selectTopicActive"
+                    name="active"
+                    class="custom-select">
+                <option value="True" selected>On</option>
+                <option value="False">Off</option>
+            </select>
+        </div>
+        <div class="form-group col-md-8">
+            <label for="inputTopicRemark">Remark</label>
+            <input id="inputTopicRemark"
+                   name="remark"
+                   type="text"
+                   class="form-control">
+        </div>
+        <div class="form-group col-md-2">
+            <label for="submitTopicAdd">Submit</label>
+            <div>
+                <button id="submitTopicAdd" type="submit" class="btn btn-danger btn-block">
+                    ADD
+                </button>
+            </div>
+        </div>
+    </div>
 </form>
-
-
-<style>
-    li {
-        line-height: 1.9;
-    }
-</style>
 {% endblock %}

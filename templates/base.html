@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block head %}
     <meta charset="utf-8">
-    <link href="//cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.2.0/tailwind.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% block styles %}
+    {{ bootstrap.load_css() }}
+    {% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
     <title>Topics / Asks / Replies</title>
+    {% endblock %}
 </head>
 <body>
 
-<div class="container mx-auto pt-4">
+<div class="container py-lg-2">
+    <header class="py-2 text-center">
+        <a href="/">{{ session_name }}</a>
+    </header>
     {% block content %}{% endblock %}
-
-    <footer class="mt-6 font-mono text-gray-500">
-        Session: {{ session_name }}
-    </footer>
 </div>
 
+{% block scripts %}
+{{ bootstrap.load_js() }}
+{% endblock %}
 </body>
 </html>
-

@@ -5,10 +5,10 @@ from playhouse.apsw_ext import APSWDatabase
 
 import logging
 
-if be.DEBUG_MODE:
-    logger = logging.getLogger('peewee')
-    logger.addHandler(logging.StreamHandler())
-    logger.setLevel(logging.DEBUG)
+# if be.DEBUG_MODE:
+#     logger = logging.getLogger('peewee')
+#     logger.addHandler(logging.StreamHandler())
+#     logger.setLevel(logging.DEBUG)
 
 db_bot = APSWDatabase(os.path.join(be.BOT_DATA_DIR, 'bot.db'))
 
@@ -158,6 +158,10 @@ class Ask(QAModel):
                 list2.append(__clear)
 
         return list2
+
+    @property
+    def words_text(self):
+        return self.words
 
     def _mix(self, list2: list, i=1, target=None):
         # results with ';'

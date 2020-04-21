@@ -1,7 +1,359 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="text-4xl font-semibold">Topics #{{ topic.id }}</h1>
-<h2 class="text-2xl font-semibold">{{ topic.title }}</h2>
+<h2>#{{ topic.id }} {{ topic.title }}</h2>
+
+<form method="post"
+      action="/update-topic/{{ topic.id }}"
+      class="mt-4 border border-primary rounded p-4 bg-light">
+    <div class="form-row">
+        <div class="input-group input-group-lg col-md-9">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputTopicTitle">#{{ topic.id }}</label>
+            </div>
+            <input id="inputTopicTitle"
+                   name="title"
+                   type="text"
+                   class="form-control"
+                   value="{{ topic.title }}">
+        </div>
+
+        <div class="input-group input-group-lg col-md-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="selectTopicActive">Active</label>
+            </div>
+            <select id="selectTopicActive"
+                    name="active"
+                    class="custom-select">
+                <option value="True" {{ 'selected' if topic.active }}>On</option>
+                <option value="False" {{ 'selected' if not topic.active }}>Off</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-row mt-2">
+
+
+        <div class="input-group col-md-2">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="selectTopicUseReply">UseReply</label>
+            </div>
+            <select id="selectTopicUseReply"
+                    name="useReply"
+                    class="custom-select">
+                <option value="True" {{ 'selected' if topic.use_reply }}>Yes</option>
+                <option value="False" {{ 'selected' if not topic.use_reply }}>No</option>
+            </select>
+        </div>
+
+        <div class="input-group col-md-2">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="selectTopicShowTitle">ShowTitle</label>
+            </div>
+            <select id="selectTopicShowTitle"
+                    name="showTitle"
+                    class="custom-select">
+                <option value="True" {{ 'selected' if topic.show_title }}>Yes</option>
+                <option value="False" {{ 'selected' if not topic.show_title }}>No</option>
+            </select>
+        </div>
+
+
+        <div class="input-group col-md-6">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputTopicRemark">Remark</label>
+            </div>
+            <input id="inputTopicRemark"
+                   name="remark"
+                   type="text"
+                   class="form-control"
+                   value="{{ topic.remark }}">
+        </div>
+
+        <div class="input-group col-md-2">
+            <button id="submitTopicSave" type="submit" class="btn btn-primary btn-block">SAVE</button>
+        </div>
+    </div>
+
+</form>
+
+
+{% for ask in topic.asks %}
+<div class="mt-3">
+    {% if ask.active %}
+    <h4><span class="badge badge-success">Active</span></h4>
+    {% else %}
+    <h4><span class="badge badge-secondary">Halt</span></h4>
+    {% endif%}
+
+    <form method="post"
+          action="/update-ask/{{ ask.id }}"
+          class="pt-1">
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="selectAskWords{{ ask.id }}">Ask</label>
+                    </div>
+                    <textarea id="selectAskWords{{ ask.id }}"
+                              name="words"
+                              class="form-control"
+                              rows="5">{{ ask.words }}</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="input-group col-md-2">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="selectAskActive{{ ask.id }}">Active</label>
+                </div>
+                <select id="selectAskActive{{ ask.id }}"
+                        name="active"
+                        class="custom-select">
+                    <option value="True" {{
+                    'selected' if ask.active }}>On</option>
+                    <option value="False" {{
+                    'selected' if not ask.active }}>Off</option>
+                </select>
+            </div>
+
+            <div class="input-group col-md-2">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="selectAskMode{{ ask.id }}">Mode</label>
+                </div>
+                <select id="selectAskMode{{ ask.id }}"
+                        name="mode"
+                        class="custom-select">
+                    <option value="0" {{
+                    'selected' if ask.mode == 0 }}>Strict</option>
+                    <option value="1" {{
+                    'selected' if ask.mode == 1 }}>Order</option>
+                    <option value="2" {{
+                    'selected' if ask.mode == 2 }}>Disorder</option>
+                </select>
+            </div>
+            <div class="input-group col-md-2">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputAskMax{{ ask.id }}">Max</label>
+                </div>
+                <input id="inputAskMax{{ ask.id }}"
+                       name="max"
+                       type="text"
+                       class="form-control"
+                       value="{{ ask.max }}">
+            </div>
+            <div class="input-group col-md-5">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputAskRemark{{ ask.id }}">Remark</label>
+                </div>
+                <input id="inputAskRemark{{ ask.id }}"
+                       name="remark"
+                       type="text"
+                       class="form-control"
+                       value="{{ ask.remark }}">
+            </div>
+            <div class="input-group col-md-1">
+                <button id="submitAskSave" type="submit" class="btn btn-primary btn-block">SAVE</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endfor %}
+
+<form method="post"
+      action="/add-ask"
+      class="mt-4 border border-primary rounded p-4 bg-light">
+
+    <input type="hidden" name="topic_id" value="{{ topic.id }}">
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="selectAskWordsNew">Ask</label>
+                </div>
+                <textarea id="selectAskWordsNew"
+                          name="words"
+                          class="form-control"
+                          rows="5"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="input-group col-md-2">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="selectAskActiveNew">Active</label>
+            </div>
+            <select id="selectAskActiveNew"
+                    name="active"
+                    class="custom-select">
+                <option value="True" selected>On</option>
+                <option value="False">Off</option>
+            </select>
+        </div>
+
+        <div class="input-group col-md-2">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="selectAskModeNew">Mode</label>
+            </div>
+            <select id="selectAskModeNew"
+                    name="mode"
+                    class="custom-select">
+                <option value="0" selected>Strict</option>
+                <option value="1">Order</option>
+                <option value="2">Disorder</option>
+            </select>
+        </div>
+        <div class="input-group col-md-2">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputAskMaxNew">Max</label>
+            </div>
+            <input id="inputAskMaxNew"
+                   name="max"
+                   type="text"
+                   class="form-control">
+        </div>
+        <div class="input-group col-md-5">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputAskRemarkNew">Remark</label>
+            </div>
+            <input id="inputAskRemarkNew"
+                   name="remark"
+                   type="text"
+                   class="form-control"">
+        </div>
+        <div class="input-group col-md-1">
+            <button id="submitAskAdd" type="submit" class="btn btn-danger btn-block">ADD</button>
+        </div>
+    </div>
+</form>
+
+{% for reply in topic.replies %}
+
+<div class="mt-3">
+    {% if reply.active %}
+    <h4><span class="badge badge-success">Active</span></h4>
+    {% else %}
+    <h4><span class="badge badge-secondary">Halt</span></h4>
+    {% endif%}
+
+    <form method="post"
+          action="/update-reply/{{ reply.id }}"
+          class="pt-1">
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="selectReplyText{{ reply.id }}">Reply</label>
+                    </div>
+                    <textarea id="selectReplyText{{ reply.id }}"
+                              name="text"
+                              class="form-control"
+                              rows="10">{{ reply.text }}</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="input-group col-md-2">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="selectReplyActive{{ reply.id }}">Active</label>
+                </div>
+                <select id="selectReplyActive{{ reply.id }}"
+                        name="active"
+                        class="custom-select">
+                    <option value="True" {{
+                    'selected' if reply.active }}>On</option>
+                    <option value="False" {{
+                    'selected' if not reply.active }}>Off</option>
+                </select>
+            </div>
+
+            <div class="input-group col-md-4">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputReplyTrigger{{ reply.id }}">Trigger</label>
+                </div>
+                <input id="inputReplyTrigger{{ reply.id }}"
+                       name="trigger"
+                       type="text"
+                       class="form-control"
+                       value="{{ reply.trigger }}">
+            </div>
+            <div class="input-group col-md-5">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputReplyRemark{{ reply.id }}">Remark</label>
+                </div>
+                <input id="inputReplyRemark{{ reply.id }}"
+                       name="remark"
+                       type="text"
+                       class="form-control"
+                       value="{{ reply.remark }}">
+            </div>
+            <div class="input-group col-md-1">
+                <button id="submitReplySave{{ reply.id }}" type="submit" class="btn btn-primary btn-block">
+                    SAVE
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endfor %}
+
+<form method="post"
+      action="/add-reply"
+      class="mt-4 border border-primary rounded p-4 bg-light">
+
+    <input type="hidden" name="topic_id" value="{{ topic.id }}">
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="selectReplyTextNew">Reply</label>
+                </div>
+                <textarea id="selectReplyTextNew"
+                          name="text"
+                          class="form-control"
+                          rows="10"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="input-group col-md-2">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="selectReplyActiveNew">Active</label>
+            </div>
+            <select id="selectReplyActiveNew"
+                    name="active"
+                    class="custom-select">
+                <option value="True" selected>On</option>
+                <option value="False">Off</option>
+            </select>
+        </div>
+
+        <div class="input-group col-md-4">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputReplyTriggerNew">Trigger</label>
+            </div>
+            <input id="inputReplyTriggerNew"
+                   name="trigger"
+                   type="text"
+                   class="form-control">
+        </div>
+        <div class="input-group col-md-5">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputReplyRemarkNew">Remark</label>
+            </div>
+            <input id="inputReplyRemarkNew"
+                   name="remark"
+                   type="text"
+                   class="form-control">
+        </div>
+        <div class="input-group col-md-1">
+            <button id="submitReplyAdd" type="submit" class="btn btn-danger btn-block">
+                ADD
+            </button>
+        </div>
+    </div>
+</form>
+
 
 {% endblock %}
