@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
     {% block head %}
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    {% block styles %}
-    {{ bootstrap.load_css() }}
-    {% endblock %}
+        {% block styles %}
+            {{ bootstrap.load_css() }}
+        {% endblock %}
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
-    <title>Topics / Asks / Replies</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
+        <title>Topics / Asks / Replies</title>
     {% endblock %}
 </head>
 <body>
@@ -23,7 +23,7 @@
 </div>
 
 {% block scripts %}
-{{ bootstrap.load_js() }}
+    {{ bootstrap.load_js() }}
 {% endblock %}
 </body>
 </html>
