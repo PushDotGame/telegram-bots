@@ -43,14 +43,10 @@
                     </div>
                 </td>
                 <td class="align-middle">
-                    {% if topic.ask_count > 0 %}
-                        {{ topic.ask_count }}
-                    {% endif %}
+                    {{ topic.asks.count() }}
                 </td>
                 <td class="align-middle">
-                    {% if topic.reply_count > 0 %}
-                        {{ topic.reply_count }}
-                    {% endif %}
+                    {{ topic.replies.count() }}
                 </td>
             </tr>
         {% endfor %}

@@ -86,19 +86,16 @@ def _new_chat_members(update, context):
 
         # cache, then delete the previous
         if message:
-            try:
-                key = '{chat_id}_welcome'.format(chat_id=update.effective_chat.id)
+            key = '{chat_id}_welcome'.format(chat_id=update.effective_chat.id)
 
-                previous_id = FC.get(key)
-                FC.put(key, message.message_id)
+            previous_id = FC.get(key)
+            FC.put(key, message.message_id)
 
-                if previous_id:
-                    context.bot.delete_message(
-                        chat_id=update.effective_chat.id,
-                        message_id=previous_id,
-                    )
-            except Exception as e:
-                print(e)
+            if previous_id:
+                context.bot.delete_message(
+                    chat_id=update.effective_chat.id,
+                    message_id=previous_id,
+                )
 
         # welcome 1
         if 'welcome1' in kvs:
@@ -118,19 +115,16 @@ def _new_chat_members(update, context):
 
             # cache, then delete the previous
             if message1:
-                try:
-                    key1 = '{chat_id}_welcome1'.format(chat_id=update.effective_chat.id)
+                key1 = '{chat_id}_welcome1'.format(chat_id=update.effective_chat.id)
 
-                    previous_id = FC.get(key1)
-                    FC.put(key1, message1.message_id)
+                previous_id = FC.get(key1)
+                FC.put(key1, message1.message_id)
 
-                    if previous_id:
-                        context.bot.delete_message(
-                            chat_id=update.effective_chat.id,
-                            message_id=previous_id,
-                        )
-                except Exception as e:
-                    print(e)
+                if previous_id:
+                    context.bot.delete_message(
+                        chat_id=update.effective_chat.id,
+                        message_id=previous_id,
+                    )
 
 
 @run_async
@@ -160,19 +154,16 @@ def _group_command_welcome(update, context):
 
     # cache, then delete the previous
     if message:
-        try:
-            key = '{chat_id}_welcome'.format(chat_id=update.effective_chat.id)
+        key = '{chat_id}_welcome'.format(chat_id=update.effective_chat.id)
 
-            previous_id = FC.get(key)
-            FC.put(key, message.message_id)
+        previous_id = FC.get(key)
+        FC.put(key, message.message_id)
 
-            if previous_id:
-                context.bot.delete_message(
-                    chat_id=update.effective_chat.id,
-                    message_id=previous_id,
-                )
-        except Exception as e:
-            print(e)
+        if previous_id:
+            context.bot.delete_message(
+                chat_id=update.effective_chat.id,
+                message_id=previous_id,
+            )
 
     # welcome 1
     if 'welcome1' in kvs:
@@ -192,16 +183,13 @@ def _group_command_welcome(update, context):
 
         # cache, then delete the previous
         if message1:
-            try:
-                key1 = '{chat_id}_welcome1'.format(chat_id=update.effective_chat.id)
+            key1 = '{chat_id}_welcome1'.format(chat_id=update.effective_chat.id)
 
-                previous_id = FC.get(key1)
-                FC.put(key1, message1.message_id)
+            previous_id = FC.get(key1)
+            FC.put(key1, message1.message_id)
 
-                if previous_id:
-                    context.bot.delete_message(
-                        chat_id=update.effective_chat.id,
-                        message_id=previous_id,
-                    )
-            except Exception as e:
-                print(e)
+            if previous_id:
+                context.bot.delete_message(
+                    chat_id=update.effective_chat.id,
+                    message_id=previous_id,
+                )

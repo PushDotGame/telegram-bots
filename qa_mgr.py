@@ -11,13 +11,14 @@ bootstrap.init_app(app)
 
 @app.route('/')
 def show_topics():
-    topics = (Topic
-              .select(Topic, fn.Count(Ask.id).alias('ask_count'), fn.Count(Reply.id).alias('reply_count'))
-              .join(Ask, JOIN.LEFT_OUTER)
-              .switch(Topic)
-              .join(Reply, JOIN.LEFT_OUTER)
-              .group_by(Topic)
-              )
+    topics = Topic.select()
+    # topics = (Topic
+    #           .select(Topic, fn.Count(Ask.id).alias('ask_count'), fn.Count(Reply.id).alias('reply_count'))
+    #           .join(Ask, JOIN.LEFT_OUTER)
+    #           .switch(Topic)
+    #           .join(Reply, JOIN.LEFT_OUTER)
+    #           .group_by(Topic)
+    #           )
     return render_template('topics.html', session_name=be.BOT_SESSION_NAME, topics=topics)
 
 

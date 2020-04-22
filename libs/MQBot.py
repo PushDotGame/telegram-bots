@@ -49,9 +49,13 @@ class MQBot(Bot):
 
     @mq.queuedmessage
     def delete_message(self, *args, **kwargs):
-        return super(MQBot, self).delete_message(
-            *args, **kwargs
-        )
+        try:
+            return super(MQBot, self).delete_message(
+                *args, **kwargs
+            )
+        except Exception as e:
+            print(e)
+            return None
 
     @mq.queuedmessage
     def forward_message(self, *args, **kwargs):
