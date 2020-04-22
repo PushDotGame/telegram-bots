@@ -149,10 +149,14 @@ class Ask(QAModel):
         return result
 
     @property
+    def list1(self):
+        return self._list(str(self.words).replace('\n', '').replace('\r', '').strip(';').split(';'))
+
+    @property
     def list2(self):
         list2 = []
 
-        for line in self._list(str(self.words).replace('\n', '').replace('\r', '').strip(';').split(';')):
+        for line in self.list1:
             __clear = self._list(line.split(','))
             if __clear:
                 list2.append(__clear)
@@ -160,8 +164,13 @@ class Ask(QAModel):
         return list2
 
     @property
-    def words_text(self):
-        return self.words
+    def rows(self):
+        rows = len(self.list1) + 1
+
+        if rows > 2:
+            return rows
+
+        return 3
 
     def _mix(self, list2: list, i=1, target=None):
         # results with ';'
