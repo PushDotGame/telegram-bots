@@ -5,23 +5,20 @@ from conf import bot as be
 
 bootstrap = Bootstrap()
 
-
-def create_app():
-    app = Flask(__name__)
-    bootstrap.init_app(app)
-
-    return app
-
-
-app = create_app()
-
-session_name = be.BOT_SESSION_NAME
+app = Flask(__name__)
+bootstrap.init_app(app)
 
 
 @app.route('/')
 def index():
-    topics = Topic.select()
-    return render_template('index.html', session_name=session_name, topics=topics)
+    topics = (Topic
+              .select(Topic, fn.Count(Ask.id).alias('ask_count'), fn.Count(Reply.id).alias('reply_count'))
+              .join(Ask, JOIN.LEFT_OUTER)
+              .switch(Topic)
+              .join(Reply, JOIN.LEFT_OUTER)
+              .group_by(Topic)
+              )
+    return render_template('index.html', session_name=be.BOT_SESSION_NAME, topics=topics)
 
 
 @app.route('/add-topic', methods=['POST'])
@@ -40,7 +37,7 @@ def add_topic():
 @app.route('/topic/<topic_id>')
 def show_topic(topic_id):
     topic = Topic.get(id=topic_id)
-    return render_template('topic.html', session_name=session_name, topic=topic)
+    return render_template('topic.html', session_name=be.BOT_SESSION_NAME, topic=topic)
 
 
 @app.route('/update-topic/<topic_id>', methods=['POST'])
@@ -107,3 +104,6 @@ def update_reply(reply_id):
     reply.remark = request.form['remark']
     reply.save()
     return redirect(request.referrer)
+
+
+app.run(debug=be.DEBUG_MODE)

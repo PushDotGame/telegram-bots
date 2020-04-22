@@ -8,8 +8,9 @@
     <tr>
         <th scope="col">#</th>
         <th scope="col">Topic</th>
-        <th scope="col">Use reply</th>
-        <th scope="col">Show title</th>
+        <th scope="col">R/T</th>
+        <th scope="col">Asks</th>
+        <th scope="col">Replies</th>
     </tr>
     </thead>
     <tbody>
@@ -17,13 +18,11 @@
     <tr class="">
         <td class="align-middle">
             {% if topic.active %}
-            <a href="/deactivate-topic/{{ topic.id }}" class="btn btn-block btn-sm btn-success">
-                {{ topic.id }}
-            </a>
+            {{ topic.id }}
             {% else %}
-            <a href="/activate-topic/{{ topic.id }}" class="btn btn-block btn-sm btn-secondary">
+            <button type="button" class="btn btn-block btn-sm btn-secondary">
                 {{ topic.id }}
-            </a>
+            </button>
             {% endif %}
         </td>
         <td class="align-middle">
@@ -32,25 +31,27 @@
             </a>
         </td>
         <td class="align-middle">
-            {% if topic.use_reply %}
-            <a href="/topic/dont-use-reply/{{ topic.id }}" class="btn btn-block btn-sm btn-success">
-                Yes
-            </a>
-            {% else %}
-            <a href="/topic/use-reply/{{ topic.id }}" class="btn btn-block btn-sm btn-outline-secondary">
-                No
-            </a>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                {% if topic.use_reply %}
+                <button type="button" class="btn btn-sm btn-success">Yes</button>
+                {% else %}
+                <button type="button" class="btn btn-sm btn-outline-secondary">No</button>
+                {% endif %}
+                {% if topic.show_title %}
+                <button type="button" class="btn btn-sm btn-success">Yes</button>
+                {% else %}
+                <button type="button" class="btn btn-sm btn-outline-secondary">No</button>
+                {% endif %}
+            </div>
+        </td>
+        <td class="align-middle">
+            {% if topic.ask_count > 0 %}
+            {{ topic.ask_count }}
             {% endif %}
         </td>
         <td class="align-middle">
-            {% if topic.show_title %}
-            <a href="/topic/dont-show-title/{{ topic.id }}" class="btn btn-block btn-sm btn-success">
-                Yes
-            </a>
-            {% else %}
-            <a href="/topic/show-title/{{ topic.id }}" class="btn btn-block btn-sm btn-outline-secondary">
-                No
-            </a>
+            {% if topic.reply_count > 0 %}
+            {{ topic.reply_count }}
             {% endif %}
         </td>
     </tr>
