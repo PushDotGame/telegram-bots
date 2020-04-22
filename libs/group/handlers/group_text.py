@@ -21,7 +21,11 @@ def _group_text(update, context):
     for ask in asks:
         if ask.match(message_text):
             topic = ask.topic
-            replies = topic.replies
+            replies = list()
+
+            for reply in topic.replies:
+                if reply.active:
+                    replies.append(reply)
 
             reply = replies[random.randint(0, len(replies) - 1)]
 
@@ -46,6 +50,7 @@ def _group_text(update, context):
 
                 text = text.format(
                     base_url=kvs['base_url'],
+                    key=kvs['key'],
                     owner_name=kvs['owner_name']
                 )
 

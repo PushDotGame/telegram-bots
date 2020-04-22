@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for kv in kvs %}
+        <form method="post"
+              action="/update-kv/{{ kv.id }}"
+              class="pt-1">
+            <div class="form-row">
+                <div class="input-group col-md-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputKey{{ kv.id }}">#{{ kv.id }}</label>
+                    </div>
+                    <input id="inputKey{{ kv.id }}"
+                           name="key"
+                           type="text"
+                           class="form-control"
+                           value="{{ kv.key }}">
+                </div>
+                <div class="input-group col-md-1">
+                    <button id="submitSave{{ kv.id }}" type="submit" class="btn btn-primary btn-block">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+            <div class="form-row mt-2">
+                <div class="form-group col-md-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="selectValue{{ kv.id }}">Value</label>
+                        </div>
+                        <textarea id="selectValue{{ kv.id }}"
+                                  name="value"
+                                  class="form-control"
+                                  rows="10">{{ kv.value }}</textarea>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    {% endfor %}
+{% endblock %}

@@ -78,6 +78,7 @@ def _new_chat_members(update, context):
             text=kvs['welcome'].format(
                 members=', '.join(members),
                 base_url=kvs['base_url'],
+                key=kvs['key'],
                 rules=kvs['rules'],
             ),
             disable_web_page_preview=True,
@@ -109,6 +110,7 @@ def _new_chat_members(update, context):
                 text=kvs['welcome1'].format(
                     members=', '.join(members),
                     base_url=kvs['base_url'],
+                    key=kvs['key'],
                     rules=kvs['rules'],
                 ),
                 disable_web_page_preview=True,
@@ -150,6 +152,7 @@ def _group_command_welcome(update, context):
         text=kvs['welcome'].format(
             members=', '.join(members),
             base_url=kvs['base_url'],
+            key=kvs['key'],
             rules=kvs['rules'],
         ),
         disable_web_page_preview=True,
@@ -181,6 +184,7 @@ def _group_command_welcome(update, context):
             text=kvs['welcome1'].format(
                 members=', '.join(members),
                 base_url=kvs['base_url'],
+                key=kvs['key'],
                 rules=kvs['rules'],
             ),
             disable_web_page_preview=True,

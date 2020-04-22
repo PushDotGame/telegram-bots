@@ -2,6 +2,7 @@ from ..GroupBotORM import *
 
 kvs = {
     'base_url': 'https://saysomething2.world',
+    'key': '0x1',
 
     'owner_name': 'your-name',
     'owner_username': 'your-username',

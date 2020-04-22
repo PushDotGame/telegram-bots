@@ -18,7 +18,7 @@ def show_topics():
               .join(Reply, JOIN.LEFT_OUTER)
               .group_by(Topic)
               )
-    return render_template('index.html', session_name=be.BOT_SESSION_NAME, topics=topics)
+    return render_template('topics.html', session_name=be.BOT_SESSION_NAME, topics=topics)
 
 
 @app.route('/topic/<topic_id>')
@@ -34,8 +34,8 @@ def add_topic():
             active=request.form['active'] == 'True',
             use_reply=request.form['useReply'] == 'True',
             show_title=request.form['showTitle'] == 'True',
-            title=request.form['title'],
-            remark=request.form['remark'],
+            title=request.form['title'].strip(),
+            remark=request.form['remark'].strip(),
         )
     return redirect(request.referrer)
 
@@ -46,8 +46,8 @@ def update_topic(topic_id):
     topic.active = request.form['active'] == 'True'
     topic.use_reply = request.form['useReply'] == 'True'
     topic.show_title = request.form['showTitle'] == 'True'
-    topic.title = request.form['title']
-    topic.remark = request.form['remark']
+    topic.title = request.form['title'].strip()
+    topic.remark = request.form['remark'].strip()
     topic.save()
     return redirect(request.referrer)
 
@@ -60,10 +60,10 @@ def add_ask():
         Ask.create(
             topic=topic,
             active=request.form['active'] == 'True',
-            mode=int(request.form['mode']),
-            words=request.form['words'],
-            max=int(request.form['max']),
-            remark=request.form['remark'],
+            mode=int(request.form['mode'].strip()),
+            words=request.form['words'].strip(),
+            max=int(request.form['max'].strip()),
+            remark=request.form['remark'].strip(),
         )
     return redirect(request.referrer)
 
@@ -72,10 +72,10 @@ def add_ask():
 def update_ask(ask_id):
     ask = Ask.get(id=ask_id)
     ask.active = request.form['active'] == 'True'
-    ask.mode = int(request.form['mode'])
-    ask.words = request.form['words']
-    ask.max = int(request.form['max'])
-    ask.remark = request.form['remark']
+    ask.mode = int(request.form['mode'].strip())
+    ask.words = request.form['words'].strip()
+    ask.max = int(request.form['max'].strip())
+    ask.remark = request.form['remark'].strip()
     ask.save()
     return redirect(request.referrer)
 
@@ -88,9 +88,9 @@ def add_reply():
         Reply.create(
             topic=topic,
             active=request.form['active'] == 'True',
-            text=request.form['text'],
-            trigger=request.form['trigger'],
-            remark=request.form['remark'],
+            text=request.form['text'].strip(),
+            trigger=request.form['trigger'].strip(),
+            remark=request.form['remark'].strip(),
         )
     return redirect(request.referrer)
 
@@ -99,10 +99,25 @@ def add_reply():
 def update_reply(reply_id):
     reply = Reply.get(id=reply_id)
     reply.active = request.form['active'] == 'True'
-    reply.text = request.form['text']
-    reply.trigger = request.form['trigger']
-    reply.remark = request.form['remark']
+    reply.text = request.form['text'].strip()
+    reply.trigger = request.form['trigger'].strip()
+    reply.remark = request.form['remark'].strip()
     reply.save()
+    return redirect(request.referrer)
+
+
+@app.route('/kvs')
+def show_kvs():
+    kvs = KeyValue.select()
+    return render_template('kvs.html', session_name=be.BOT_SESSION_NAME, kvs=kvs)
+
+
+@app.route('/update-kv/<kv_id>', methods=['POST'])
+def update_kv(kv_id):
+    kv = KeyValue.get(id=kv_id)
+    kv.key = request.form['key'].strip()
+    kv.value = request.form['value'].strip()
+    kv.save()
     return redirect(request.referrer)
 
 
