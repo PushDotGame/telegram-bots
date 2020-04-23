@@ -4,6 +4,7 @@ kvs = {
     'base_url': 'https://saysomething2.world',
     'key': '0x1',
 
+    'project_name': 'SaySomething2.world',
     'owner_name': 'your-name',
     'owner_username': 'your-username',
 

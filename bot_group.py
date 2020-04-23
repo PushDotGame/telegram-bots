@@ -25,9 +25,10 @@ def main():
     # group: `/serve`
     handlers.group_command_serve.attach(dp)
 
-    # group: `/kick`
+    # group: commands
     handlers.group_command_kick.attach(dp)
     handlers.group_command_rules.attach(dp)
+    handlers.group_command_resp.attach(dp)
 
     # group: new, left
     handlers.new_chat_members.attach(dp)
