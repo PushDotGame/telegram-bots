@@ -11,6 +11,20 @@ def get_id_from_bot_token(token):
     return token.split(':')[0]
 
 
+def list2solid(payload: list, els_to_remove: list = None):
+    result = []
+
+    for item in payload:
+        if item not in result:
+            result.append(item.strip())
+
+    for el in els_to_remove or ['', None]:
+        while el in result:
+            result.remove(el)
+
+    return result
+
+
 def file2list(path_to_file: str, comment: str = '#', integer: bool = False):
     if not os.path.exists(path_to_file):
         return []

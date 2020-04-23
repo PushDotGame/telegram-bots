@@ -211,14 +211,14 @@ class Ask(QAModel):
 
     def match(self, payload: str):
         if self.max and len(payload) > self.max:
-            return False
+            return None
 
         mixed_list = self._mix(self.list2)
 
         if self.MODE_STRICT == self.mode:
             for mixed in mixed_list:
                 if ''.join(mixed) == payload:
-                    return True
+                    return self
 
         elif self.MODE_ORDER == self.mode:
             for mixed in mixed_list:
@@ -226,7 +226,7 @@ class Ask(QAModel):
                 for e in mixed:
                     p.append(payload.find(e))
                 if -1 not in p and p == sorted(p):
-                    return True
+                    return self
 
         elif self.MODE_DISORDER == self.mode:
             for mixed in mixed_list:
@@ -238,9 +238,9 @@ class Ask(QAModel):
                         __matched = False
 
                 if __matched is True:
-                    return True
+                    return self
 
-        return False
+        return None
 
 
 class Reply(QAModel):
