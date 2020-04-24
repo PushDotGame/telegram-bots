@@ -35,7 +35,7 @@ def _group_command_resp(update, context):
 
         key = context.args[0]
 
-        path_to_file = os.path.join(os.path.join(be.BOT_DATA_DIR, 'resp'), '{}.txt'.format(key))
+        path_to_file = os.path.join(os.path.join(be.BOT_DATA_DIR, 'resp'), '{}.md'.format(key))
 
         if not os.path.exists(path_to_file):
             update.message.reply_text(
@@ -65,6 +65,6 @@ def _group_command_resp(update, context):
             i += 1
 
             if i % 2 > 0:
-                time.sleep(max(3, int(len(para) / 15)))
+                time.sleep(max(3, int(len(para) / 19)))
             else:
                 time.sleep(random.randint(10, 15))

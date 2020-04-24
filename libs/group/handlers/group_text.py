@@ -51,30 +51,35 @@ def _group_text(update, context):
                 text = '\n\n'.join(reply.lines)
 
             text = text.format(
+                project_name=kvs['project_name'],
                 base_url=kvs['base_url'],
                 key=kvs['key'],
                 owner_name=kvs['owner_name']
             )
 
-            text_messages = lf.list2solid(text.split('/-/'))
+            paras = lf.list2solid(text.split('/-/'))
 
             i = 0
-            for text_message in text_messages:
+            for para in paras:
                 if ask.topic.use_reply and i == 0:
                     """use reply"""
                     update.message.reply_text(
-                        text=text_message,
+                        text=para,
                         disable_web_page_preview=True,
                     )
 
                 else:
                     context.bot.send_message(
                         chat_id=update.effective_chat.id,
-                        text=text_message,
+                        text=para,
                         disable_web_page_preview=True,
                     )
 
-                time.sleep(max(random.randint(1, 3), min(4, int(len(text_message) / 35))))
                 i += 1
+
+                if i % 2 > 0:
+                    time.sleep(max(3, int(len(para) / 19)))
+                else:
+                    time.sleep(random.randint(10, 15))
 
             break

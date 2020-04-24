@@ -1,12 +1,15 @@
-import telegram
+import os
 import time
 import random
+import codecs
+import telegram
 from telegram.ext import (Dispatcher, MessageHandler, CommandHandler, Filters)
 from telegram.ext.dispatcher import run_async
 from libs.group.kvs import kvs
 from conf import group_bot
 from conf import bot as be
 from libs.FileCache import FileCache
+from libs import functions as lf
 
 # file cache
 FC = FileCache(be.BOT_CACHE_DIR)
@@ -33,6 +36,51 @@ def _delete_notification_if_full_name_too_long(members, message: telegram.Messag
     for member in members:
         if len(member.full_name) > group_bot.FULL_NAME_TOO_LONG:
             message.delete()
+
+
+def _send_welcome(update, context, members):
+    path_to_file = os.path.join(os.path.join(be.BOT_DATA_DIR, 'resp'), 'welcome.md')
+
+    if not os.path.exists(path_to_file):
+        return
+
+    with codecs.open(path_to_file, 'r', encoding='utf-8') as f:
+        content = f.read().format(
+            members=', '.join(members),
+            project_name=kvs['project_name'],
+            base_url=kvs['base_url'],
+            key=kvs['key'],
+            owner_name=kvs['owner_name'],
+            rules=kvs['rules'],
+        )
+
+        paras = lf.list2solid(content.split('/-/'))
+
+    i = 0
+    for para in paras:
+        message = context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=para,
+            disable_web_page_preview=True,
+        ).result()
+
+        cache_previous_key = '{chat_id}_welcome{i}'.format(chat_id=update.effective_chat.id, i=i)
+
+        previous_id = FC.get(cache_previous_key)
+        FC.put(cache_previous_key, message.message_id)
+
+        if previous_id:
+            context.bot.delete_message(
+                chat_id=update.effective_chat.id,
+                message_id=previous_id,
+            )
+
+        i += 1
+
+        if i % 2 > 0:
+            time.sleep(max(3, min(10, int(len(para) / 19))))
+        else:
+            time.sleep(random.randint(10, 15))
 
 
 @run_async
@@ -72,59 +120,8 @@ def _new_chat_members(update, context):
         # forget: cache members
         FC.forget(cache_members_key)
 
-        # send welcome
-        message = context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text=kvs['welcome'].format(
-                members=', '.join(members),
-                base_url=kvs['base_url'],
-                key=kvs['key'],
-                rules=kvs['rules'],
-            ),
-            disable_web_page_preview=True,
-        ).result()
-
-        # cache, then delete the previous
-        if message:
-            key = '{chat_id}_welcome'.format(chat_id=update.effective_chat.id)
-
-            previous_id = FC.get(key)
-            FC.put(key, message.message_id)
-
-            if previous_id:
-                context.bot.delete_message(
-                    chat_id=update.effective_chat.id,
-                    message_id=previous_id,
-                )
-
-        # welcome 1
-        if 'welcome1' in kvs:
-            time.sleep(random.randint(5, 10))
-
-            # send welcome
-            message1 = context.bot.send_message(
-                chat_id=update.effective_chat.id,
-                text=kvs['welcome1'].format(
-                    members=', '.join(members),
-                    base_url=kvs['base_url'],
-                    key=kvs['key'],
-                    rules=kvs['rules'],
-                ),
-                disable_web_page_preview=True,
-            ).result()
-
-            # cache, then delete the previous
-            if message1:
-                key1 = '{chat_id}_welcome1'.format(chat_id=update.effective_chat.id)
-
-                previous_id = FC.get(key1)
-                FC.put(key1, message1.message_id)
-
-                if previous_id:
-                    context.bot.delete_message(
-                        chat_id=update.effective_chat.id,
-                        message_id=previous_id,
-                    )
+        # send welcome message(s)
+        _send_welcome(update, context, members)
 
 
 @run_async
@@ -140,56 +137,5 @@ def _group_command_welcome(update, context):
     # forget: cache members
     FC.forget(cache_members_key)
 
-    # send welcome
-    message = context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text=kvs['welcome'].format(
-            members=', '.join(members),
-            base_url=kvs['base_url'],
-            key=kvs['key'],
-            rules=kvs['rules'],
-        ),
-        disable_web_page_preview=True,
-    ).result()
-
-    # cache, then delete the previous
-    if message:
-        key = '{chat_id}_welcome'.format(chat_id=update.effective_chat.id)
-
-        previous_id = FC.get(key)
-        FC.put(key, message.message_id)
-
-        if previous_id:
-            context.bot.delete_message(
-                chat_id=update.effective_chat.id,
-                message_id=previous_id,
-            )
-
-    # welcome 1
-    if 'welcome1' in kvs:
-        time.sleep(random.randint(5, 10))
-
-        # send welcome
-        message1 = context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text=kvs['welcome1'].format(
-                members=', '.join(members),
-                base_url=kvs['base_url'],
-                key=kvs['key'],
-                rules=kvs['rules'],
-            ),
-            disable_web_page_preview=True,
-        ).result()
-
-        # cache, then delete the previous
-        if message1:
-            key1 = '{chat_id}_welcome1'.format(chat_id=update.effective_chat.id)
-
-            previous_id = FC.get(key1)
-            FC.put(key1, message1.message_id)
-
-            if previous_id:
-                context.bot.delete_message(
-                    chat_id=update.effective_chat.id,
-                    message_id=previous_id,
-                )
+    # send welcome message(s)
+    _send_welcome(update, context, members)
