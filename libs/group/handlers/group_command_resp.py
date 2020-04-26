@@ -65,6 +65,6 @@ def _group_command_resp(update, context):
             i += 1
 
             if i % 2 > 0:
-                time.sleep(max(3, int(len(para) / 19)))
+                time.sleep(max(3, int(len(para) / 15)))
             else:
                 time.sleep(random.randint(10, 15))
