@@ -1,4 +1,5 @@
 import os
+import hashlib
 
 
 def touch_dirs(path_to_dir):
@@ -58,3 +59,15 @@ def overwrite_none(a, b):
         return a
 
     return b
+
+
+def md5(s: str):
+    """
+    md5
+
+    :param str s: source value
+    :return: str
+    """
+    m = hashlib.md5()
+    m.update(s.encode('utf-8'))
+    return m.hexdigest()
