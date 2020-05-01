@@ -61,6 +61,19 @@ def _group_text(update, context):
 
             i = 0
             for para in paras:
+                if para.startswith('forward!!!'):
+                    try:
+                        arr = lf.list2solid(para.split('!!!')[1].split(','))
+                        if len(arr) > 1:
+                            context.bot.forward_message(
+                                chat_id=update.effective_chat.id,
+                                from_chat_id=int(arr[0]),
+                                message_id=int(arr[1]),
+                            )
+                            continue
+                    except Exception as e:
+                        print(e)
+
                 if ask.topic.use_reply and i == 0:
                     """use reply"""
                     update.message.reply_text(

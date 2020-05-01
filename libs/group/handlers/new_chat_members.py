@@ -58,29 +58,45 @@ def _send_welcome(update, context, members):
 
     i = 0
     for para in paras:
-        message = context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text=para,
-            disable_web_page_preview=True,
-        ).result()
+        message = None
 
-        cache_previous_key = '{chat_id}_welcome{i}'.format(chat_id=update.effective_chat.id, i=i)
+        if para.startswith('forward!!!'):
+            try:
+                arr = lf.list2solid(para.split('!!!')[1].split(','))
+                if len(arr) > 1:
+                    message = context.bot.forward_message(
+                        chat_id=update.effective_chat.id,
+                        from_chat_id=int(arr[0]),
+                        message_id=int(arr[1]),
+                    ).result()
+            except Exception as e:
+                print(e)
 
-        previous_id = FC.get(cache_previous_key)
-        FC.put(cache_previous_key, message.message_id)
-
-        if previous_id:
-            context.bot.delete_message(
-                chat_id=update.effective_chat.id,
-                message_id=previous_id,
-            )
-
-        i += 1
-
-        if i % 2 > 0:
-            time.sleep(max(3, min(10, int(len(para) / 19))))
         else:
-            time.sleep(random.randint(10, 15))
+            message = context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=para,
+                disable_web_page_preview=True,
+            ).result()
+
+        if message:
+            cache_previous_key = '{chat_id}_welcome{i}'.format(chat_id=update.effective_chat.id, i=i)
+
+            previous_id = FC.get(cache_previous_key)
+            FC.put(cache_previous_key, message.message_id)
+
+            if previous_id:
+                context.bot.delete_message(
+                    chat_id=update.effective_chat.id,
+                    message_id=previous_id,
+                )
+
+            i += 1
+
+            if i % 2 > 0:
+                time.sleep(max(3, min(10, int(len(para) / 19))))
+            else:
+                time.sleep(random.randint(10, 15))
 
 
 @run_async
