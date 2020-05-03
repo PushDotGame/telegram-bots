@@ -1,0 +1,72 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2020-05-03 13:57+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: group_command_game.py:45
+msgid "Block number"
+msgstr ""
+
+#: group_command_game.py:48
+msgid ""
+"\n"
+"*Round #{}*\n"
+msgstr ""
+
+#: group_command_game.py:50
+msgid "Big-winners PRIZE"
+msgstr ""
+
+#: group_command_game.py:51
+msgid "Lucky-cookies PRIZE"
+msgstr ""
+
+#: group_command_game.py:54
+msgid ""
+"\n"
+"Game has not started yet."
+msgstr ""
+
+#: group_command_game.py:58
+msgid "Countdown"
+msgstr ""
+
+#: group_command_game.py:60
+msgid ""
+"\n"
+"*Countdown ENDED*"
+msgstr ""
+
+#: group_command_game.py:67
+msgid ""
+"*Total bonus*\n"
+msgstr ""
+
+#: group_command_game.py:69
+msgid "Surprise"
+msgstr ""
+
+#: group_command_game.py:71
+msgid "Bonuses"
+msgstr ""
+
+#: group_command_game.py:73
+msgid "{} lucky-cookies"
+msgstr ""
+
+#: group_command_game.py:76
+msgid "Shareholders"
+msgstr ""
+
