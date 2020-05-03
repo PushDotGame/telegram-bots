@@ -10,6 +10,7 @@ from conf import group_bot
 from conf import bot as be
 from libs import functions as lf
 from libs import CacheORM as Cache
+from libs.group.send_status import send_status
 
 
 def attach(dispatcher: Dispatcher):
@@ -96,6 +97,13 @@ def _send_welcome(update, context, members):
                 time.sleep(random.randint(10, 15))
 
 
+def _is_bot_joined(update, context):
+    for member in update.message.new_chat_members:
+        if member.id == context.bot.id:
+            return True
+    return False
+
+
 @run_async
 def _new_chat_members(update, context):
     """When new member(s) joined a group, send welcome text, and remove the previous"""
@@ -106,11 +114,12 @@ def _new_chat_members(update, context):
         # delete notification message, if a full name is too long
         _delete_notification_if_full_name_too_long(update.message.new_chat_members, update.effective_message)
 
-        # # when bot joined
-        # for member in update.message.new_chat_members:
-        #     if member.id == context.bot.id:
-        #         update.message.reply_text(text='Hi')
-        #         break
+        # when bot joined
+        if _is_bot_joined(update, context):
+            send_status(update, context)
+            return
+
+        send_status(update, context)
 
         # new members
         cache_members_key = '{chat_id}_welcome_members'.format(chat_id=update.effective_chat.id)
