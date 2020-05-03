@@ -10,8 +10,8 @@ def main():
     cache_key = 'game_status'
 
     status = game.status()
-    # status['round_counter'] = 1
-    # status['timer'] = 1588481315
+    status['round_counter'] = 1
+    status['timer'] = 1588481315
 
     FC.put(cache_key, status)
 

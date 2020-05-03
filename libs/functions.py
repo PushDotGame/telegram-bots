@@ -86,6 +86,14 @@ def text_right(value, width: int = 20):
     return '`{value}`'.format(value=str(value).rjust(width))
 
 
+def text_title(value):
+    lines = list()
+    lines.append('`====================`')
+    lines.append('`  {value}`'.format(value=str(value)))
+    lines.append('`====================`')
+    return '\n'.join(lines)
+
+
 def seconds2countdown(seconds: int):
     m, s = divmod(seconds, 60)
     h, m = divmod(m, 60)
