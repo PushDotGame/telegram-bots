@@ -3,10 +3,7 @@ from telegram.ext.dispatcher import run_async
 from libs.group.kvs import kvs
 from . import functions as hf
 from conf import bot as be
-from libs.FileCache import FileCache
-
-# file cache
-FC = FileCache(be.BOT_CACHE_DIR)
+from libs import CacheORM as Cache
 
 
 def attach(dispatcher: Dispatcher):
@@ -37,7 +34,7 @@ def _group_command_kick(update, context):
 
     # cache user id
     key = '{chat_id}_kick_user_id'.format(chat_id=update.effective_chat.id)
-    FC.put(key, update.effective_message.reply_to_message.from_user.id)
+    Cache.put(key, update.effective_message.reply_to_message.from_user.id)
 
     # kick
     update.effective_chat.kick_member(

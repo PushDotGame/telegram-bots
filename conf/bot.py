@@ -16,6 +16,11 @@ if PROXY_URL:
         'proxy_url': PROXY_URL
     }
 
+# language
+LANGUAGE = 'en-US'
+if len(sys.argv) > 2:
+    LANGUAGE = sys.argv[2]
+
 # bot session name
 if len(sys.argv) < 2:
     exit('Please run `python3 {} <bot_session_name>`'.format(sys.argv[0]))

@@ -10,10 +10,6 @@ from libs.group.kvs import kvs
 from . import functions as hf
 from conf import bot as be
 from libs import functions as lf
-from libs.FileCache import FileCache
-
-# file cache
-FC = FileCache(be.BOT_CACHE_DIR)
 
 
 def attach(dispatcher: Dispatcher):

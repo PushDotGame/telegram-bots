@@ -28,6 +28,7 @@ def main():
     # group: commands
     handlers.group_command_kick.attach(dp)
     handlers.group_command_rules.attach(dp)
+    handlers.group_command_game.attach(dp)
     handlers.group_command_resp.attach(dp)
 
     # group: new, left

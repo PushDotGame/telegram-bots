@@ -9,6 +9,7 @@ CONTRACTS_DIR = os.path.join(BASE_DIR, 'contracts')
 dotenv.load_dotenv(dotenv_path=os.path.join(BASE_DIR, '.env'))
 
 DEBUG_MODE = os.getenv("DEBUG", 'False').lower() == 'true'
+LOCALE_DIR = fn.touch_dirs(os.path.join(BASE_DIR, 'locale'))
 CERT_DIR = fn.touch_dirs(os.getenv("CERT_DIR") or os.path.join(BASE_DIR, '.cert'))
 DATA_DIR = fn.touch_dirs(os.getenv("DATA_DIR") or os.path.join(BASE_DIR, '.data'))
 DOG_DIR = fn.touch_dirs(os.getenv("DOG_DIR") or os.path.join(os.path.join(BASE_DIR, '.data'), 'dog'))

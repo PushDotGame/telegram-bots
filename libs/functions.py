@@ -71,3 +71,22 @@ def md5(s: str):
     m = hashlib.md5()
     m.update(s.encode('utf-8'))
     return m.hexdigest()
+
+
+def text_kv(key, value, width: int = 20):
+    lines = [
+        '{key}'.format(key=key),
+        text_right(value, width),
+    ]
+
+    return '\n'.join(lines)
+
+
+def text_right(value, width: int = 20):
+    return '`{value}`'.format(value=str(value).rjust(width))
+
+
+def seconds2countdown(seconds: int):
+    m, s = divmod(seconds, 60)
+    h, m = divmod(m, 60)
+    return "%d:%02d:%02d" % (h, m, s)

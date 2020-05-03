@@ -8,11 +8,8 @@ from telegram.ext.dispatcher import run_async
 from libs.group.kvs import kvs
 from conf import group_bot
 from conf import bot as be
-from libs.FileCache import FileCache
 from libs import functions as lf
-
-# file cache
-FC = FileCache(be.BOT_CACHE_DIR)
+from libs import CacheORM as Cache
 
 
 def attach(dispatcher: Dispatcher):
@@ -82,8 +79,8 @@ def _send_welcome(update, context, members):
         if message:
             cache_previous_key = '{chat_id}_welcome{i}'.format(chat_id=update.effective_chat.id, i=i)
 
-            previous_id = FC.get(cache_previous_key)
-            FC.put(cache_previous_key, message.message_id)
+            previous_id = Cache.get(cache_previous_key)
+            Cache.put(cache_previous_key, message.message_id)
 
             if previous_id:
                 context.bot.delete_message(
@@ -117,24 +114,24 @@ def _new_chat_members(update, context):
 
         # new members
         cache_members_key = '{chat_id}_welcome_members'.format(chat_id=update.effective_chat.id)
-        members = FC.get(cache_members_key, [])
+        members = Cache.get(cache_members_key, [])
         for member in update.message.new_chat_members:
             if len(member.full_name) <= group_bot.FULL_NAME_TOO_LONG and member.mention_markdown() not in members:
                 members.append(member.mention_markdown())
 
         # cache timestamp
         timestamp_key = '{chat_id}_welcome_timestamp'.format(chat_id=update.effective_chat.id)
-        prev_timestamp = FC.get(timestamp_key, 0)
+        prev_timestamp = Cache.get(timestamp_key, 0)
         curr_timestamp = time.time()
 
         if curr_timestamp - prev_timestamp < 120:
-            FC.put(cache_members_key, members)
+            Cache.put(cache_members_key, members)
             return
         else:
-            FC.put(timestamp_key, time.time())
+            Cache.put(timestamp_key, time.time())
 
         # forget: cache members
-        FC.forget(cache_members_key)
+        Cache.forget(cache_members_key)
 
         # send welcome message(s)
         _send_welcome(update, context, members)
@@ -144,14 +141,14 @@ def _new_chat_members(update, context):
 def _group_command_welcome(update, context):
     # new members
     cache_members_key = '{chat_id}_welcome_members'.format(chat_id=update.effective_chat.id)
-    members = FC.get(cache_members_key, [])
+    members = Cache.get(cache_members_key, [])
 
     # cache timestamp
     timestamp_key = '{chat_id}_welcome_timestamp'.format(chat_id=update.effective_chat.id)
-    FC.put(timestamp_key, time.time())
+    Cache.put(timestamp_key, time.time())
 
     # forget: cache members
-    FC.forget(cache_members_key)
+    Cache.forget(cache_members_key)
 
     # send welcome message(s)
     _send_welcome(update, context, members)

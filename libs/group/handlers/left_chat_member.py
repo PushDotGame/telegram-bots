@@ -1,10 +1,6 @@
 from telegram.ext import (Dispatcher, MessageHandler, Filters)
 from telegram.ext.dispatcher import run_async
-from conf import bot as be
-from libs.FileCache import FileCache
-
-# file cache
-FC = FileCache(be.BOT_CACHE_DIR)
+from libs import CacheORM as Cache
 
 
 def attach(dispatcher: Dispatcher):
@@ -20,7 +16,7 @@ def attach(dispatcher: Dispatcher):
 def _left_chat_member(update, context):
     # cached kicked user id
     key = '{chat_id}_kick_user_id'.format(chat_id=update.effective_chat.id)
-    user_id = FC.get(key)
+    user_id = Cache.get(key)
 
     if user_id != update.effective_message.left_chat_member.id:
         update.effective_message.delete()

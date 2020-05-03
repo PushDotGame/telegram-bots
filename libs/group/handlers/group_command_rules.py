@@ -1,11 +1,6 @@
 from telegram.ext import (Dispatcher, CommandHandler, Filters)
 from telegram.ext.dispatcher import run_async
 from libs.group.kvs import kvs
-from conf import bot as be
-from libs.FileCache import FileCache
-
-# file cache
-FC = FileCache(be.BOT_CACHE_DIR)
 
 
 def attach(dispatcher: Dispatcher):
