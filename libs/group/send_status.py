@@ -25,16 +25,16 @@ def send_status(update, context, reply: bool = False, part2: bool = False):
 
         # prize & countdown
         text_prize = list()
-        text_prize.append(lf.text_kv(_('ETH block number'), status['block_number']))
+        text_prize.append(lf.text_kv(_('ETH block number'), status['block_number']) + '\n')
 
         if status['round_counter'] > 0:
-            text_prize.append('\n' + lf.text_title(_('Game: Round #{}').format(status['round_counter'])) + '\n')
-        else:
-            text_prize.append('\n' + lf.text_title(_('Current STATUS')) + '\n')
+            text_prize.append(lf.text_title(_('Game: Round #{}').format(status['round_counter'])) + '\n')
 
+        # prize
         text_prize.append(lf.text_kv(_('Big-winners PRIZE'), '{} ETH'.format(status['winner_fund'])))
         text_prize.append(lf.text_kv(_('Lucky-cookies PRIZE'), '{} ETH'.format(status['cookie_fund'])))
 
+        # round / countdown / push
         if status['round_counter'] < 1:
             text_prize.append('\n'
                               + _('Round #{round_counter} will start after a PUSH')
@@ -52,6 +52,7 @@ def send_status(update, context, reply: bool = False, part2: bool = False):
                                   + '*'
                                   )
 
+        # send
         if reply:
             update.message.reply_text('\n'.join(text_prize))
         else:
