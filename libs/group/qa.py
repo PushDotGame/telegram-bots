@@ -1,10 +1,17 @@
 from libs.GroupBotORM import *
 
-asks = (Ask
+tags = (QATag
         .select()
-        .join(Topic)
-        .join(Reply)
-        .where((Ask.active == True) & (Topic.active == True) & (Reply.active == True))
-        .prefetch(Topic, Reply)
+        .join(QATopic)
+        .join(QAReply)
+        .where((QATag.active == True) & (QATopic.active == True) & (QAReply.active == True))
+        .prefetch(QATopic, QAReply)
         )
 
+asks = (QAAsk
+        .select()
+        .join(QATopic)
+        .join(QAReply)
+        .where((QAAsk.active == True) & (QATopic.active == True) & (QAReply.active == True))
+        .prefetch(QATopic, QAReply)
+        )

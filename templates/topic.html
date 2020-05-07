@@ -69,11 +69,47 @@
             </div>
 
             <div class="input-group col-md-2">
-                <button id="submitTopicSave" type="submit" class="btn btn-primary btn-block">SAVE</button>
+                <button id="submitTopicSave" type="submit" class="btn btn-primary btn-block">SAVE TOPIC</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="mt-4 text-center">
+        {% for tag in topic.tags %}
+            {% if tag.active %}
+                <a class="btn btn-sm btn-success mr-2" href="/toggle-tag/{{ tag.id }}">
+                    #{{ tag.title }}
+                </a>
+            {% else %}
+                <a class="btn btn-sm btn-secondary mr-2" href="/toggle-tag/{{ tag.id }}">
+                    #{{ tag.title }}
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <form method="post"
+          action="/add-tag/{{ topic.id }}"
+          class="mt-2">
+        <div class="form-row">
+            <div class="input-group col-md-4 offset-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputTopicTag">#</label>
+                </div>
+                <input id="inputTopicTag"
+                       name="title"
+                       type="text"
+                       class="form-control"
+                       value="">
+            </div>
+
+            <div class="input-group col-md-2">
+                <button id="submitTagAdd" type="submit" class="btn btn-danger btn-block">ADD TAG</button>
             </div>
         </div>
 
     </form>
+
 
 
     {% for ask in topic.asks %}
@@ -135,7 +171,7 @@
                                class="form-control"
                                value="{{ ask.max }}">
                     </div>
-                    <div class="input-group col-md-5">
+                    <div class="input-group col-md-4">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputAskRemark{{ ask.id }}">Remark</label>
                         </div>
@@ -145,8 +181,8 @@
                                class="form-control"
                                value="{{ ask.remark }}">
                     </div>
-                    <div class="input-group col-md-1">
-                        <button id="submitAskSave" type="submit" class="btn btn-primary btn-block">SAVE</button>
+                    <div class="input-group col-md-2">
+                        <button id="submitAskSave" type="submit" class="btn btn-primary btn-block">SAVE ASK</button>
                     </div>
                 </div>
             </form>
@@ -154,11 +190,8 @@
     {% endfor %}
 
     <form method="post"
-          action="/add-ask"
+          action="/add-ask/{{ topic.id }}"
           class="mt-4 border border-primary rounded p-4 bg-light">
-
-        <input type="hidden" name="topic_id" value="{{ topic.id }}">
-
         <div class="form-row">
             <div class="form-group col-md-12">
                 <div class="input-group">
@@ -206,7 +239,7 @@
                        type="text"
                        class="form-control">
             </div>
-            <div class="input-group col-md-5">
+            <div class="input-group col-md-4">
                 <div class="input-group-prepend">
                     <label class="input-group-text" for="inputAskRemarkNew">Remark</label>
                 </div>
@@ -215,8 +248,8 @@
                        type="text"
                        class="form-control">
             </div>
-            <div class="input-group col-md-1">
-                <button id="submitAskAdd" type="submit" class="btn btn-danger btn-block">ADD</button>
+            <div class="input-group col-md-2">
+                <button id="submitAskAdd" type="submit" class="btn btn-danger btn-block">ADD ASK</button>
             </div>
         </div>
     </form>
@@ -269,7 +302,7 @@
                                class="form-control"
                                value="{{ reply.trigger }}">
                     </div>
-                    <div class="input-group col-md-5">
+                    <div class="input-group col-md-4">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputReplyRemark{{ reply.id }}">Remark</label>
                         </div>
@@ -279,9 +312,9 @@
                                class="form-control"
                                value="{{ reply.remark }}">
                     </div>
-                    <div class="input-group col-md-1">
+                    <div class="input-group col-md-2">
                         <button id="submitReplySave{{ reply.id }}" type="submit" class="btn btn-primary btn-block">
-                            SAVE
+                            SAVE REPLY
                         </button>
                     </div>
                 </div>
@@ -290,11 +323,8 @@
     {% endfor %}
 
     <form method="post"
-          action="/add-reply"
+          action="/add-reply/{{ topic.id }}"
           class="mt-4 border border-primary rounded p-4 bg-light">
-
-        <input type="hidden" name="topic_id" value="{{ topic.id }}">
-
         <div class="form-row">
             <div class="form-group col-md-12">
                 <div class="input-group">
@@ -330,7 +360,7 @@
                        type="text"
                        class="form-control">
             </div>
-            <div class="input-group col-md-5">
+            <div class="input-group col-md-4">
                 <div class="input-group-prepend">
                     <label class="input-group-text" for="inputReplyRemarkNew">Remark</label>
                 </div>
@@ -339,9 +369,9 @@
                        type="text"
                        class="form-control">
             </div>
-            <div class="input-group col-md-1">
+            <div class="input-group col-md-2">
                 <button id="submitReplyAdd" type="submit" class="btn btn-danger btn-block">
-                    ADD
+                    ADD REPLY
                 </button>
             </div>
         </div>

@@ -102,7 +102,10 @@ class QAModel(Model):
         database = db_qa
 
 
-class Topic(QAModel):
+class QATopic(QAModel):
+    class Meta:
+        table_name = 'topic'
+
     active = BooleanField(default=True)
     use_reply = BooleanField(default=False)
     show_title = BooleanField(default=False)
@@ -116,12 +119,35 @@ class Topic(QAModel):
         )
 
 
-class Ask(QAModel):
+class QATag(QAModel):
+    class Meta:
+        table_name = 'tag'
+
+    topic = ForeignKeyField(QATopic, backref='tags')
+    active = BooleanField(default=True)
+    title = CharField(max_length=32)
+
+    def __str__(self):
+        return '<Tag #{id} #{title}>'.format(
+            id=self.id,
+            title=self.title,
+        )
+
+    def match(self, payload: str):
+        if '#{}'.format(self.title) in payload:
+            return True
+        return False
+
+
+class QAAsk(QAModel):
+    class Meta:
+        table_name = 'ask'
+
     MODE_STRICT = 0
     MODE_ORDER = 1
     MODE_DISORDER = 2
 
-    topic = ForeignKeyField(Topic, backref='asks')
+    topic = ForeignKeyField(QATopic, backref='asks')
     active = BooleanField(default=True)
     mode = SmallIntegerField(default=0)
     words = TextField(null=True)
@@ -243,8 +269,11 @@ class Ask(QAModel):
         return None
 
 
-class Reply(QAModel):
-    topic = ForeignKeyField(Topic, backref='replies')
+class QAReply(QAModel):
+    class Meta:
+        table_name = 'reply'
+
+    topic = ForeignKeyField(QATopic, backref='replies')
     active = BooleanField(default=True)
     text = TextField(null=True)
     trigger = CharField(max_length=32, null=True)

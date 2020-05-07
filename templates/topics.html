@@ -16,17 +16,27 @@
             <tr class="">
                 <td class="align-middle">
                     {% if topic.active %}
-                        {{ topic.id }}
+                        <a href="/toggle-topic/{{ topic.id }}">{{ topic.id }}</a>
                     {% else %}
-                        <button type="button" class="btn btn-block btn-sm btn-secondary">
-                            {{ topic.id }}
-                        </button>
+                        <a href="/toggle-topic/{{ topic.id }}" class="btn btn-block btn-sm btn-secondary">{{ topic.id }}</a>
                     {% endif %}
                 </td>
                 <td class="align-middle">
-                    <a href="/topic/{{ topic.id }}">
-                        {{ topic.title }}
-                    </a>
+                    <div>
+                        <a href="/topic/{{ topic.id }}">
+                            {{ topic.title }}
+                        </a>
+                    </div>
+
+                    <div>
+                        {% for tag in topic.tags %}
+                            {% if tag.active %}
+                                <span class="badge badge-success">#{{ tag.title }}</span>
+                            {% else %}
+                                <span class="badge badge-secondary">#{{ tag.title }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </td>
                 <td class="align-middle">
                     <div class="btn-group" role="group" aria-label="Basic example">

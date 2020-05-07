@@ -11,6 +11,7 @@ from conf import bot as be
 from libs import functions as lf
 from libs import CacheORM as Cache
 from libs.group.send_status import send_status
+from . import functions as hf
 
 
 def attach(dispatcher: Dispatcher):
@@ -56,10 +57,11 @@ def _send_welcome(update, context, members):
 
     i = 0
     for para in paras:
-        message = None
+        if not para.startswith('///'):
+            message = None
 
-        if para.startswith('forward!!!'):
-            try:
+            if para.startswith('forward!!!'):
+                """ forward """
                 arr = lf.list2solid(para.split('!!!')[1].split(','))
                 if len(arr) > 1:
                     message = context.bot.forward_message(
@@ -67,34 +69,33 @@ def _send_welcome(update, context, members):
                         from_chat_id=int(arr[0]),
                         message_id=int(arr[1]),
                     ).result()
-            except Exception as e:
-                print(e)
-
-        else:
-            message = context.bot.send_message(
-                chat_id=update.effective_chat.id,
-                text=para,
-                disable_web_page_preview=True,
-            ).result()
-
-        if message:
-            cache_previous_key = '{chat_id}_welcome{i}'.format(chat_id=update.effective_chat.id, i=i)
-
-            previous_id = Cache.get(cache_previous_key)
-            Cache.put(cache_previous_key, message.message_id)
-
-            if previous_id:
-                context.bot.delete_message(
+            else:
+                """ text message """
+                message = context.bot.send_message(
                     chat_id=update.effective_chat.id,
-                    message_id=previous_id,
-                )
+                    text=para,
+                    disable_web_page_preview=True,
+                ).result()
 
             i += 1
+            if message:
+                _previous(i, message, update, context)
 
-            if i % 2 > 0:
-                time.sleep(max(3, min(10, int(len(para) / 19))))
-            else:
-                time.sleep(random.randint(10, 15))
+                hf.para_sleep(para, i)
+
+
+def _previous(i, message, update, context):
+    if message:
+        cache_previous_key = '{chat_id}_welcome{i}'.format(chat_id=update.effective_chat.id, i=i)
+
+        previous_id = Cache.get(cache_previous_key)
+        Cache.put(cache_previous_key, message.message_id)
+
+        if previous_id:
+            context.bot.delete_message(
+                chat_id=update.effective_chat.id,
+                message_id=previous_id,
+            )
 
 
 def _is_bot_joined(update, context):

@@ -10,7 +10,7 @@ def main():
         db_kv.create_tables([KeyValue])
 
     with db_qa:
-        db_qa.create_tables([Topic, Ask, Reply])
+        db_qa.create_tables([QATopic, QATag, QAAsk, QAReply])
 
     with db_cache:
         db_cache.create_tables([Cache])

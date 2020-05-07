@@ -11,7 +11,7 @@ bootstrap.init_app(app)
 
 @app.route('/')
 def show_topics():
-    topics = Topic.select()
+    topics = QATopic.select()
     # topics = (Topic
     #           .select(Topic, fn.Count(Ask.id).alias('ask_count'), fn.Count(Reply.id).alias('reply_count'))
     #           .join(Ask, JOIN.LEFT_OUTER)
@@ -24,14 +24,14 @@ def show_topics():
 
 @app.route('/topic/<topic_id>')
 def show_topic(topic_id):
-    topic = Topic.get(id=topic_id)
+    topic = QATopic.get(id=topic_id)
     return render_template('topic.html', session_name=be.BOT_SESSION_NAME, topic=topic)
 
 
 @app.route('/add-topic', methods=['POST'])
 def add_topic():
     if len(request.form['title'].strip()) > 0:
-        topic = Topic.create(
+        QATopic.create(
             active=request.form['active'] == 'True',
             use_reply=request.form['useReply'] == 'True',
             show_title=request.form['showTitle'] == 'True',
@@ -41,9 +41,17 @@ def add_topic():
     return redirect(request.referrer)
 
 
+@app.route('/toggle-topic/<topic_id>', methods=['GET'])
+def toggle_topic(topic_id):
+    topic = QATopic.get(id=topic_id)
+    topic.active = not topic.active
+    topic.save()
+    return redirect(request.referrer)
+
+
 @app.route('/update-topic/<topic_id>', methods=['POST'])
 def update_topic(topic_id):
-    topic = Topic.get(id=topic_id)
+    topic = QATopic.get(id=topic_id)
     topic.active = request.form['active'] == 'True'
     topic.use_reply = request.form['useReply'] == 'True'
     topic.show_title = request.form['showTitle'] == 'True'
@@ -53,16 +61,37 @@ def update_topic(topic_id):
     return redirect(request.referrer)
 
 
-@app.route('/add-ask', methods=['POST'])
-def add_ask():
-    topic = Topic.get(id=int(request.form['topic_id']))
+@app.route('/add-tag/<topic_id>', methods=['POST'])
+def add_tag(topic_id):
+    topic = QATopic.get(id=topic_id)
+
+    if len(request.form['title'].strip()) > 0:
+        QATag.create(
+            topic=topic,
+            active=True,
+            title=request.form['title'].strip().lower(),
+        )
+    return redirect(request.referrer)
+
+
+@app.route('/toggle-tag/<tag_id>', methods=['GET'])
+def toggle_tag(tag_id):
+    tag = QATag.get(id=tag_id)
+    tag.active = not tag.active
+    tag.save()
+    return redirect(request.referrer)
+
+
+@app.route('/add-ask/<topic_id>', methods=['POST'])
+def add_ask(topic_id):
+    topic = QATopic.get(id=topic_id)
 
     if len(request.form['words'].strip()) > 0:
-        Ask.create(
+        QAAsk.create(
             topic=topic,
             active=request.form['active'] == 'True',
             mode=int(request.form['mode'].strip()),
-            words=request.form['words'].strip(),
+            words=request.form['words'].strip().lower(),
             max=int(request.form['max'].strip()),
             remark=request.form['remark'].strip(),
         )
@@ -71,22 +100,22 @@ def add_ask():
 
 @app.route('/update-ask/<ask_id>', methods=['POST'])
 def update_ask(ask_id):
-    ask = Ask.get(id=ask_id)
+    ask = QAAsk.get(id=ask_id)
     ask.active = request.form['active'] == 'True'
     ask.mode = int(request.form['mode'].strip())
-    ask.words = request.form['words'].strip()
+    ask.words = request.form['words'].strip().lower()
     ask.max = int(request.form['max'].strip())
     ask.remark = request.form['remark'].strip()
     ask.save()
     return redirect(request.referrer)
 
 
-@app.route('/add-reply', methods=['POST'])
-def add_reply():
-    topic = Topic.get(id=int(request.form['topic_id']))
+@app.route('/add-reply/<topic_id>', methods=['POST'])
+def add_reply(topic_id):
+    topic = QATopic.get(id=topic_id)
 
     if len(request.form['text'].strip()) > 0:
-        Reply.create(
+        QAReply.create(
             topic=topic,
             active=request.form['active'] == 'True',
             text=request.form['text'].strip(),
@@ -98,7 +127,7 @@ def add_reply():
 
 @app.route('/update-reply/<reply_id>', methods=['POST'])
 def update_reply(reply_id):
-    reply = Reply.get(id=reply_id)
+    reply = QAReply.get(id=reply_id)
     reply.active = request.form['active'] == 'True'
     reply.text = request.form['text'].strip()
     reply.trigger = request.form['trigger'].strip()
