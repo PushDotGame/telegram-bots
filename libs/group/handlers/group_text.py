@@ -88,7 +88,7 @@ def _send_replies(update, context, topic):
                 print(e)
 
         elif not para.startswith('///'):
-            if topic.use_reply and i == 0:
+            if topic.use_reply:
                 """use reply"""
                 message = update.message.reply_text(
                     text=para,

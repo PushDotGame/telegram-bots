@@ -134,6 +134,9 @@ class QATag(QAModel):
         )
 
     def match(self, payload: str):
+        if self.title == payload:
+            return True
+
         if '#{}'.format(self.title) in payload:
             return True
         return False
