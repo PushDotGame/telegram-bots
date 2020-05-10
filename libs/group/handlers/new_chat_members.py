@@ -60,7 +60,13 @@ def _send_welcome(update, context, members):
         if not para.startswith('///'):
             message = None
 
-            if para.startswith('forward!!!'):
+            if para.startswith('trigger!!!'):
+                arr = lf.list2solid(para.split('!!!'))
+                if len(arr) > 1:
+                    if arr[1] == 'status':
+                        send_status(update, context)
+
+            elif para.startswith('forward!!!'):
                 """ forward """
                 arr = lf.list2solid(para.split('!!!')[1].split(','))
                 if len(arr) > 1:
@@ -69,6 +75,7 @@ def _send_welcome(update, context, members):
                         from_chat_id=int(arr[0]),
                         message_id=int(arr[1]),
                     ).result()
+
             else:
                 """ text message """
                 message = context.bot.send_message(
@@ -120,7 +127,7 @@ def _new_chat_members(update, context):
             send_status(update, context)
             return
 
-        send_status(update, context)
+        # send_status(update, context)
 
         # new members
         cache_members_key = '{chat_id}_welcome_members'.format(chat_id=update.effective_chat.id)

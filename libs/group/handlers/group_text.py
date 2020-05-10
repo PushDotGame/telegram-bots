@@ -2,10 +2,11 @@ import time
 import random
 from telegram.ext import (Dispatcher, MessageHandler, Filters)
 from telegram.ext.dispatcher import run_async
+from . import functions as hf
+from libs import functions as lf
 from libs.group.kvs import kvs
 from libs.group.qa import (tags, asks)
-import libs.functions as lf
-from . import functions as hf
+from libs.group.send_status import send_status
 
 
 def attach(dispatcher: Dispatcher):
@@ -87,7 +88,14 @@ def _send_replies(update, context, topic):
             except Exception as e:
                 print(e)
 
+        elif para.startswith('trigger!!!'):
+            arr = lf.list2solid(para.split('!!!'))
+            if len(arr) > 1:
+                if arr[1] == 'status':
+                    send_status(update, context)
+
         elif not para.startswith('///'):
+            message = None
             if topic.use_reply:
                 """use reply"""
                 message = update.message.reply_text(
