@@ -8,7 +8,7 @@ from telegram.ext import (Dispatcher, CommandHandler, Filters)
 from telegram.ext.dispatcher import run_async
 from libs.group.kvs import kvs
 from . import functions as hf
-from conf import bot as be
+from libs import config_bot as config
 from libs import functions as lf
 
 
@@ -31,7 +31,7 @@ def _group_command_resp(update, context):
 
         key = context.args[0]
 
-        path_to_file = os.path.join(os.path.join(be.BOT_DATA_DIR, 'resp'), '{}.md'.format(key))
+        path_to_file = os.path.join(os.path.join(config.BOT_DATA_DIR, 'resp'), '{}.md'.format(key))
 
         if not os.path.exists(path_to_file):
             update.message.reply_text(

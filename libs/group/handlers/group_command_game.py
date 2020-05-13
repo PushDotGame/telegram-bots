@@ -1,11 +1,11 @@
 from telegram.ext import (Dispatcher, CommandHandler, Filters)
 from telegram.ext.dispatcher import run_async
+from libs import config
 from libs.FileCache import FileCache
-from libs import settings
 from libs.group.send_status import send_status
 
 # file cache
-FC = FileCache(settings.DOG_DIR)
+FC = FileCache(config.DOG_DIR)
 
 
 def attach(dispatcher: Dispatcher):

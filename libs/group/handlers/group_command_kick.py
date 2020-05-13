@@ -2,7 +2,7 @@ from telegram.ext import (Dispatcher, CommandHandler, Filters)
 from telegram.ext.dispatcher import run_async
 from libs.group.kvs import kvs
 from . import functions as hf
-from conf import bot as be
+from libs import config_bot as config
 from libs import CacheORM as Cache
 
 
@@ -28,7 +28,7 @@ def _group_command_kick(update, context):
     if update.effective_message.reply_to_message is None:
         return
 
-    if update.effective_message.reply_to_message.from_user.id == be.BOT_ID:
+    if update.effective_message.reply_to_message.from_user.id == config.BOT_ID:
         update.effective_message.delete()
         return
 

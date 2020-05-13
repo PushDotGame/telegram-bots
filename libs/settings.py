@@ -1,9 +1,16 @@
 import os
 import dotenv
+from configparser import ConfigParser
 from . import functions as fn
 
+# dir
 BASE_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), os.pardir)
+CONF_DIR = os.path.join(BASE_DIR, 'conf')
 CONTRACTS_DIR = os.path.join(BASE_DIR, 'contracts')
+
+# config.ini
+cfg = ConfigParser()
+cfg.read(os.path.join(CONF_DIR, 'config.ini'))
 
 # load .env
 dotenv.load_dotenv(dotenv_path=os.path.join(BASE_DIR, '.env'))

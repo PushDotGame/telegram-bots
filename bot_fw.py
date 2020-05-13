@@ -1,22 +1,15 @@
-import os
-import dotenv
-import conf.bot as be
-import libs.shell as shell
+from libs import config_bot as config
+from libs import shell
 from libs.MQBot import MQBot
-from telegram import ParseMode
 from telegram.ext import (Updater, Filters, CommandHandler, MessageHandler)
 
-# load: `.bot.session_name`
-dotenv.load_dotenv(dotenv_path=os.path.join(be.ENV_DIR, '.bot.{}'.format(be.BOT_SESSION_NAME)))
-FORWARD_CHAT_ID = os.getenv("FORWARD_CHAT_ID")
+FORWARD_CHAT_ID = config.getint(config.BOT_SESSION_NAME, 'FORWARD_CHAT_ID')
 
 
 def private_command_start(update, context):
     update.message.reply_text(
         text='Hi, I can forward your every message to @julia4pr',
-        reply_to_message_id=update.effective_message.message_id,
-        # parse_mode=ParseMode.MARKDOWN,
-        # disable_web_page_preview=True,
+        reply_to_message_id=update.effective_message.message_id
     )
 
 
@@ -24,21 +17,19 @@ def private_message(update, context):
     update.effective_message.forward(FORWARD_CHAT_ID)
     update.message.reply_text(
         text='`Forwarded.`',
-        reply_to_message_id=update.effective_message.message_id,
-        # parse_mode=ParseMode.MARKDOWN,
-        # disable_web_page_preview=True,
+        reply_to_message_id=update.effective_message.message_id
     )
 
 
 def main():
     # bot
-    bot = MQBot(token=be.BOT_TOKEN)
+    bot = MQBot(token=config.BOT_TOKEN)
 
     # init python-telegram-bot: updater and dispatcher
     updater = Updater(
         bot=bot,
         use_context=True,
-        request_kwargs=be.REQUEST_KWARGS,
+        request_kwargs=config.REQUEST_KWARGS,
     )
 
     # dispatcher
@@ -58,31 +49,25 @@ def main():
     ))
 
     def start():
-        updater.start_webhook(
-            listen=be.LISTEN,
-            port=be.BOT_PORT,
-            url_path=be.BOT_ID,
-            key=be.PATH_TO_KEY,
-            cert=be.PATH_TO_CERT,
-            webhook_url=be.WEBHOOK_URL,
-        )
+        updater.start_webhook(listen=config.SERVER_LISTEN,
+                              port=config.BOT_PORT,
+                              url_path=config.BOT_URL_PATH,
+                              key=config.PATH_TO_KEY,
+                              cert=config.PATH_TO_CERT,
+                              webhook_url=config.BOT_WEBHOOK_URL)
         print('updater started.')
         return
 
     def stop():
+        bot.stop_mq()
         updater.stop()
         print('updater stopped.')
-        return
-
-    # exit
-    def xx():
-        stop()
         exit('Goodbye.')
         return
 
     start()
 
-    if be.DEBUG_MODE:
+    if config.DEBUG_MODE:
         shell.embed()
 
 

@@ -1,7 +1,7 @@
 from flask_bootstrap import Bootstrap
 from flask import (Flask, request, redirect, url_for, render_template)
 from libs.GroupBotORM import *
-from conf import bot as be
+from libs import config_bot as config
 
 bootstrap = Bootstrap()
 
@@ -19,13 +19,13 @@ def show_topics():
     #           .join(Reply, JOIN.LEFT_OUTER)
     #           .group_by(Topic)
     #           )
-    return render_template('topics.html', session_name=be.BOT_SESSION_NAME, topics=topics)
+    return render_template('topics.html', session_name=config.BOT_SESSION_NAME, topics=topics)
 
 
 @app.route('/topic/<topic_id>')
 def show_topic(topic_id):
     topic = QATopic.get(id=topic_id)
-    return render_template('topic.html', session_name=be.BOT_SESSION_NAME, topic=topic)
+    return render_template('topic.html', session_name=config.BOT_SESSION_NAME, topic=topic)
 
 
 @app.route('/add-topic', methods=['POST'])
@@ -69,7 +69,7 @@ def add_tag(topic_id):
         QATag.create(
             topic=topic,
             active=True,
-            title=request.form['title'].strip().lower(),
+            title=request.form['title'].strip().strip('#').lower(),
         )
     return redirect(request.referrer)
 
@@ -139,7 +139,7 @@ def update_reply(reply_id):
 @app.route('/kvs')
 def show_kvs():
     kvs = KeyValue.select()
-    return render_template('kvs.html', session_name=be.BOT_SESSION_NAME, kvs=kvs)
+    return render_template('kvs.html', session_name=config.BOT_SESSION_NAME, kvs=kvs)
 
 
 @app.route('/update-kv/<kv_id>', methods=['POST'])
@@ -151,4 +151,4 @@ def update_kv(kv_id):
     return redirect(request.referrer)
 
 
-app.run(debug=be.DEBUG_MODE)
+app.run(debug=config.DEBUG_MODE)

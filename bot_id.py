@@ -1,34 +1,22 @@
-import conf.bot as be
-import libs.shell as shell
+from libs import shell
+from libs import config_bot as config
 from libs.MQBot import MQBot
-from telegram import ParseMode
 from telegram.ext import (Updater, Filters, CommandHandler, MessageHandler)
 
 
 def private_command_start(update, context):
-    update.message.reply_text(
-        text='Add this bot to a group or a channel as administrator,'
-             '\n\nthen send `/id`, I\'ll answer.'
-             '\n\nIn a channel, please send `id?`',
-        reply_to_message_id=update.effective_message.message_id,
-    )
+    update.message.reply_text('Add this bot to a group or a channel as administrator,'
+                              '\n\nthen send `/id`, I\'ll answer.'
+                              '\n\nIn a channel, please send `id?`')
 
 
 def private_command_id(update, context):
-    update.message.reply_text(
-        text='`{}`'.format(str(update.effective_user)),
-        reply_to_message_id=update.effective_message.message_id,
-    )
+    update.message.reply_text('`{}`'.format(str(update.effective_user)))
 
 
 def group_command_id(update, context):
-    update.message.reply_text(
-        text='Chat\n`{}`\n\nUser\n`{}`'.format(
-            update.effective_chat,
-            update.effective_user,
-        ),
-        reply_to_message_id=update.effective_message.message_id,
-    )
+    update.message.reply_text('Chat\n`{}`\n\nUser\n`{}`'.format(update.effective_chat,
+                                                                update.effective_user))
 
 
 def channel_id(update, context):
@@ -48,22 +36,20 @@ def new_chat_members(update, context):
     if bot_joined:
         context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text='This {} ID\n`{}`'.format(
-                update.effective_chat.type,
-                update.effective_chat.id,
-            ),
+            text='This {} ID\n`{}`'.format(update.effective_chat.type,
+                                           update.effective_chat.id),
         )
 
 
 def main():
     # bot
-    bot = MQBot(token=be.BOT_TOKEN)
+    bot = MQBot(token=config.BOT_TOKEN)
 
     # init python-telegram-bot: updater and dispatcher
     updater = Updater(
         bot=bot,
         use_context=True,
-        request_kwargs=be.REQUEST_KWARGS,
+        request_kwargs=config.REQUEST_KWARGS,
     )
 
     # dispatcher
@@ -103,31 +89,25 @@ def main():
     ))
 
     def start():
-        updater.start_webhook(
-            listen=be.LISTEN,
-            port=be.BOT_PORT,
-            url_path=be.BOT_ID,
-            key=be.PATH_TO_KEY,
-            cert=be.PATH_TO_CERT,
-            webhook_url=be.WEBHOOK_URL,
-        )
+        updater.start_webhook(listen=config.SERVER_LISTEN,
+                              port=config.BOT_PORT,
+                              url_path=config.BOT_URL_PATH,
+                              key=config.PATH_TO_KEY,
+                              cert=config.PATH_TO_CERT,
+                              webhook_url=config.BOT_WEBHOOK_URL)
         print('updater started.')
         return
 
     def stop():
+        bot.stop_mq()
         updater.stop()
         print('updater stopped.')
-        return
-
-    # exit
-    def xx():
-        stop()
         exit('Goodbye.')
         return
 
     start()
 
-    if be.DEBUG_MODE:
+    if config.DEBUG_MODE:
         shell.embed()
 
 

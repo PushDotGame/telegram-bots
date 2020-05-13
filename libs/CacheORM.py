@@ -1,7 +1,7 @@
 import os
 import time
 import json
-import conf.bot as be
+from libs import config_bot as config
 from peewee import *
 from playhouse.apsw_ext import APSWDatabase
 from . import functions as lf
@@ -9,11 +9,11 @@ from . import functions as lf
 import logging
 
 # if be.DEBUG_MODE:
-#     logger = logging.getLogger('peewee')
-#     logger.addHandler(logging.StreamHandler())
-#     logger.setLevel(logging.DEBUG)
+#     cleaner = logging.getLogger('peewee')
+#     cleaner.addHandler(logging.StreamHandler())
+#     cleaner.setLevel(logging.DEBUG)
 
-db_cache = APSWDatabase(os.path.join(be.BOT_DATA_DIR, 'cache.db'))
+db_cache = APSWDatabase(os.path.join(config.BOT_DATA_DIR, 'cache.db'))
 
 
 class CacheModel(Model):

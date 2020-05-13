@@ -1,18 +1,18 @@
 import os
-from . import settings
+from libs import config
 from decimal import Decimal
 from web3 import Web3
 
 w3 = Web3(Web3.HTTPProvider(
-    endpoint_uri=settings.WEB3_HTTP_PROVIDER,
+    endpoint_uri=config.WEB3_HTTP_PROVIDER,
 ))
 
-with open(os.path.join(settings.CONTRACTS_DIR, 'game.json'), 'r') as f:
+with open(os.path.join(config.CONTRACTS_DIR, 'game.json'), 'r') as f:
     game_abi = f.read().strip()
 
 GAME_CONTRACT = w3.eth.contract(
     abi=game_abi,
-    address=w3.toChecksumAddress(settings.GAME_ADDRESS),
+    address=w3.toChecksumAddress(config.GAME_ADDRESS),
 )
 
 

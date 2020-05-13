@@ -2,6 +2,7 @@
 .data/
 presets/bot*
 debug*.py
+conf/*.ini
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

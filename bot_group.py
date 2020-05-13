@@ -1,19 +1,21 @@
-import conf.bot as be
-import libs.shell as shell
+from libs import shell
+from libs import config_bot as config
 from libs.MQBot import MQBot
 from libs.group import handlers
 from telegram.ext import Updater
+from libs.GroupBotORM import (db_bot, db_kv, db_qa, Chat, User, ChatAdmin, KeyValue, QATopic, QATag, QAAsk, QAReply)
+from libs.CacheORM import (db_cache, Cache)
 
 
 def main():
     # bot
-    bot = MQBot(token=be.BOT_TOKEN)
+    bot = MQBot(token=config.BOT_TOKEN)
 
     # updater
     updater = Updater(
         bot=bot,
         use_context=True,
-        request_kwargs=be.REQUEST_KWARGS,
+        request_kwargs=config.REQUEST_KWARGS,
     )
 
     # dispatcher
@@ -39,14 +41,12 @@ def main():
     handlers.group_text.attach(dp)
 
     def start():
-        updater.start_webhook(
-            listen=be.LISTEN,
-            port=be.BOT_PORT,
-            url_path=be.BOT_ID,
-            key=be.PATH_TO_KEY,
-            cert=be.PATH_TO_CERT,
-            webhook_url=be.WEBHOOK_URL,
-        )
+        updater.start_webhook(listen=config.SERVER_LISTEN,
+                              port=config.BOT_PORT,
+                              url_path=config.BOT_URL_PATH,
+                              key=config.PATH_TO_KEY,
+                              cert=config.PATH_TO_CERT,
+                              webhook_url=config.BOT_WEBHOOK_URL)
         print('updater started.')
         return
 
@@ -59,9 +59,21 @@ def main():
 
     start()
 
-    if be.DEBUG_MODE:
+    if config.DEBUG_MODE:
         shell.embed()
 
 
 if __name__ == "__main__":
+    with db_bot:
+        db_bot.create_tables([Chat, User, ChatAdmin])
+
+    with db_kv:
+        db_kv.create_tables([KeyValue])
+
+    with db_qa:
+        db_qa.create_tables([QATopic, QATag, QAAsk, QAReply])
+
+    with db_cache:
+        db_cache.create_tables([Cache])
+
     main()

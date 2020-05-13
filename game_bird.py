@@ -2,18 +2,17 @@ import os
 import time
 import gettext
 import libs.game as game
-from libs import settings
+from libs import config
 from libs.FileCache import FileCache
 from libs import functions as lf
-from conf import bot as be
 
 # file cache
-FC = FileCache(settings.DOG_DIR)
+FC = FileCache(config.DOG_DIR)
 
 
 def main():
     # _ = (gettext
-    #      .translation(os.path.splitext(__file__)[0], settings.LOCALE_DIR, languages=[be.LANGUAGE, 'en-US'])
+    #      .translation(os.path.splitext(__file__)[0], config.LOCALE_DIR, languages=[be.LANGUAGE, 'en-US'])
     #      .gettext
     #      )
 

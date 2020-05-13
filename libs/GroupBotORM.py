@@ -1,16 +1,16 @@
 import os
-import conf.bot as be
+from libs import config_bot as config
 from peewee import *
 from playhouse.apsw_ext import APSWDatabase
 
 import logging
 
 # if be.DEBUG_MODE:
-#     logger = logging.getLogger('peewee')
-#     logger.addHandler(logging.StreamHandler())
-#     logger.setLevel(logging.DEBUG)
+#     cleaner = logging.getLogger('peewee')
+#     cleaner.addHandler(logging.StreamHandler())
+#     cleaner.setLevel(logging.DEBUG)
 
-db_bot = APSWDatabase(os.path.join(be.BOT_DATA_DIR, 'bot.db'))
+db_bot = APSWDatabase(os.path.join(config.BOT_DATA_DIR, 'bot.db'))
 
 
 class BotModel(Model):
@@ -81,7 +81,7 @@ class ChatAdmin(BotModel):
         )
 
 
-db_kv = APSWDatabase(os.path.join(be.BOT_DATA_DIR, 'kvs.db'))
+db_kv = APSWDatabase(os.path.join(config.BOT_DATA_DIR, 'kvs.db'))
 
 
 class ConfModel(Model):
@@ -94,7 +94,7 @@ class KeyValue(ConfModel):
     value = TextField(null=True)
 
 
-db_qa = APSWDatabase(os.path.join(be.BOT_DATA_DIR, 'qa.db'))
+db_qa = APSWDatabase(os.path.join(config.BOT_DATA_DIR, 'qa.db'))
 
 
 class QAModel(Model):

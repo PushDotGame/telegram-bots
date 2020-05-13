@@ -1,9 +1,9 @@
 import libs.game as game
-from libs import settings
+from libs import config
 from libs.FileCache import FileCache
 
 # file cache
-FC = FileCache(settings.DOG_DIR)
+FC = FileCache(config.DOG_DIR)
 
 
 def main():

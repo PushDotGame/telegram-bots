@@ -1,5 +1,6 @@
 import sys
 from libs.settings import *
+from libs import config
 from decimal import Decimal
 
 dotenv.load_dotenv(dotenv_path=os.path.join(BASE_DIR, '.env'))

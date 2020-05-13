@@ -2,19 +2,18 @@ import os
 import time
 import random
 import gettext
-from conf import bot as be
+from libs import config_bot as config
 from libs.FileCache import FileCache
-from libs import settings
 from libs import functions as lf
 
 # file cache
-FC = FileCache(settings.DOG_DIR)
+FC = FileCache(config.DOG_DIR)
 
 
 def send_status(update, context, reply: bool = False, part2: bool = False):
     _ = gettext.translation(domain=os.path.splitext(os.path.basename(__file__))[0],
-                            localedir=settings.LOCALE_DIR,
-                            languages=[be.LANGUAGE],
+                            localedir=config.LOCALE_DIR,
+                            languages=[config.LANGUAGE],
                             fallback=True,
                             ).gettext
 

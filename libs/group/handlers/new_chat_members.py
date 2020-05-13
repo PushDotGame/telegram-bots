@@ -6,12 +6,13 @@ import telegram
 from telegram.ext import (Dispatcher, MessageHandler, CommandHandler, Filters)
 from telegram.ext.dispatcher import run_async
 from libs.group.kvs import kvs
-from conf import group_bot
-from conf import bot as be
 from libs import functions as lf
 from libs import CacheORM as Cache
 from libs.group.send_status import send_status
 from . import functions as hf
+from libs import config_bot as config
+
+FULL_NAME_TOO_LONG = config.cfg.getint(config.BOT_SESSION_NAME, 'FULL_NAME_TOO_LONG')
 
 
 def attach(dispatcher: Dispatcher):
@@ -33,12 +34,12 @@ def attach(dispatcher: Dispatcher):
 
 def _delete_notification_if_full_name_too_long(members, message: telegram.Message):
     for member in members:
-        if len(member.full_name) > group_bot.FULL_NAME_TOO_LONG:
+        if len(member.full_name) > FULL_NAME_TOO_LONG:
             message.delete()
 
 
 def _send_welcome(update, context, members):
-    path_to_file = os.path.join(os.path.join(be.BOT_DATA_DIR, 'resp'), 'welcome.md')
+    path_to_file = os.path.join(os.path.join(config.BOT_DATA_DIR, 'resp'), 'welcome.md')
 
     if not os.path.exists(path_to_file):
         return
@@ -116,42 +117,39 @@ def _is_bot_joined(update, context):
 def _new_chat_members(update, context):
     """When new member(s) joined a group, send welcome text, and remove the previous"""
 
-    if group_bot.REMOVE_FOOTPRINT:
-        update.effective_message.delete()
+    # delete notification message, if a full name is too long
+    _delete_notification_if_full_name_too_long(update.message.new_chat_members, update.effective_message)
+
+    # when bot joined
+    if _is_bot_joined(update, context):
+        send_status(update, context)
+        return
+
+    # send_status(update, context)
+
+    # new members
+    cache_members_key = '{chat_id}_welcome_members'.format(chat_id=update.effective_chat.id)
+    members = Cache.get(cache_members_key, [])
+    for member in update.message.new_chat_members:
+        if len(member.full_name) <= FULL_NAME_TOO_LONG and member.mention_markdown() not in members:
+            members.append(member.mention_markdown())
+
+    # cache timestamp
+    timestamp_key = '{chat_id}_welcome_timestamp'.format(chat_id=update.effective_chat.id)
+    prev_timestamp = Cache.get(timestamp_key, 0)
+    curr_timestamp = time.time()
+
+    if curr_timestamp - prev_timestamp < 120:
+        Cache.put(cache_members_key, members)
+        return
     else:
-        # delete notification message, if a full name is too long
-        _delete_notification_if_full_name_too_long(update.message.new_chat_members, update.effective_message)
+        Cache.put(timestamp_key, time.time())
 
-        # when bot joined
-        if _is_bot_joined(update, context):
-            send_status(update, context)
-            return
+    # forget: cache members
+    Cache.forget(cache_members_key)
 
-        # send_status(update, context)
-
-        # new members
-        cache_members_key = '{chat_id}_welcome_members'.format(chat_id=update.effective_chat.id)
-        members = Cache.get(cache_members_key, [])
-        for member in update.message.new_chat_members:
-            if len(member.full_name) <= group_bot.FULL_NAME_TOO_LONG and member.mention_markdown() not in members:
-                members.append(member.mention_markdown())
-
-        # cache timestamp
-        timestamp_key = '{chat_id}_welcome_timestamp'.format(chat_id=update.effective_chat.id)
-        prev_timestamp = Cache.get(timestamp_key, 0)
-        curr_timestamp = time.time()
-
-        if curr_timestamp - prev_timestamp < 120:
-            Cache.put(cache_members_key, members)
-            return
-        else:
-            Cache.put(timestamp_key, time.time())
-
-        # forget: cache members
-        Cache.forget(cache_members_key)
-
-        # send welcome message(s)
-        _send_welcome(update, context, members)
+    # send welcome message(s)
+    _send_welcome(update, context, members)
 
 
 @run_async
